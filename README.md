@@ -52,3 +52,63 @@ export default tseslint.config({
   },
 })
 ```
+
+```
+med-eye-ai
+├─ eslint.config.js
+├─ index.html
+├─ package-lock.json
+├─ package.json
+├─ public
+│  └─ vite.svg
+├─ README.md
+├─ src
+│  ├─ api
+│  │  ├─ authService.ts
+│  │  ├─ axios.ts
+│  │  └─ userService.ts
+│  ├─ App.css
+│  ├─ App.tsx
+│  ├─ assets
+│  │  ├─ img1.jpg
+│  │  ├─ img3.jpg
+│  │  ├─ img5.jpeg
+│  │  ├─ logo.png
+│  │  └─ react.svg
+│  ├─ enum
+│  │  └─ layout-screens.ts
+│  ├─ index.css
+│  ├─ main.tsx
+│  ├─ old-components
+│  │  ├─ about
+│  │  │  └─ about.tsx
+│  │  ├─ contact
+│  │  │  └─ contact-us.tsx
+│  │  ├─ landing-page
+│  │  │  └─ landing-page.tsx
+│  │  ├─ layout
+│  │  │  ├─ app-bar
+│  │  │  │  └─ custom-app-bar.tsx
+│  │  │  └─ layout.tsx
+│  │  ├─ login
+│  │  │  └─ Login.tsx
+│  │  └─ register
+│  │     └─ Register.tsx
+│  ├─ old-screens
+│  │  ├─ common-styles.ts
+│  │  └─ index
+│  │     └─ Index.tsx
+│  ├─ pages
+│  │  ├─ home
+│  │  └─ index
+│  │     └─ index.tsx
+│  ├─ Routes
+│  │  └─ Rotes
+│  │     └─ Routes.tsx
+│  └─ vite-env.d.ts
+├─ tsconfig.app.json
+├─ tsconfig.json
+├─ tsconfig.node.json
+└─ vite.config.ts
+
+```
