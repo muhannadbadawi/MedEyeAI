@@ -1,0 +1,53 @@
+{
+  "welcome": "Welcome",
+  "message": "Hello, how are you?",
+  "LangingPage": {
+    "login": "Login",
+    "register": "Register",
+    "contact": "Contact"
+  },
+  "MainScreen": {
+    "title": "Welcome to MedEyaAI",
+    "description": "Your partner in eye care",
+    "description2": "We are here to help you with your eye care needs.",
+    "getStarted": "Get Started"
+  },
+  "LoginSection": {
+    "email": "Email",
+    "password": "Password",
+    "login": "Login",
+    "forgotPassword": "Forgot Password?",
+    "enterEmail": "Please enter your email",
+    "enterPassword": "Please enter your password"
+  },
+  "RegisterSection": {
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "register": "Register",
+    "nameRequired": "Please input your name!",
+    "emailRequired": "Please input your email!",
+    "validEmail": "Please input a valid email!",
+    "passwordRequired": "Please input your password!",
+    "confirmPasswordRequired": "Please confirm your password!",
+    "passwordMatch": "Passwords do not match!",
+    "enterName": "Please enter your name",
+    "enterEmail": "Please enter your email",
+    "enterPassword": "Please enter your password",
+    "confirmPasswordPlaceholder": "Please confirm your password"
+  },
+  "ContactSection": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send",
+    "nameRequired": "Please input your name!",
+    "emailRequired": "Please input your email!",
+    "validEmail": "Please input a valid email!",
+    "messageRequired": "Please input your message!",
+    "enterName": "Please enter your name",
+    "enterEmail": "Please enter your email",
+    "enterMessage": "Please enter your message"
+  }
+}

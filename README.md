@@ -52,8 +52,6 @@ export default tseslint.config({
   },
 })
 ```
-
-```
 med-eye-ai
 ├─ eslint.config.js
 ├─ index.html
@@ -70,38 +68,34 @@ med-eye-ai
 │  ├─ App.css
 │  ├─ App.tsx
 │  ├─ assets
-│  │  ├─ img1.jpg
+│  │  ├─ flags
+│  │  │  ├─ Jordan_flag_icon_round.svg
+│  │  │  └─ UK_flag_icon_round.svg
 │  │  ├─ img3.jpg
-│  │  ├─ img5.jpeg
 │  │  ├─ logo.png
+│  │  ├─ macro-eye-iris.jpg
+│  │  ├─ new-logo.png
 │  │  └─ react.svg
 │  ├─ enum
-│  │  └─ layout-screens.ts
+│  ├─ i18n
+│  │  ├─ ar.json
+│  │  ├─ en.json
+│  │  └─ i18n.ts
 │  ├─ index.css
 │  ├─ main.tsx
-│  ├─ old-components
-│  │  ├─ about
-│  │  │  └─ about.tsx
-│  │  ├─ contact
-│  │  │  └─ contact-us.tsx
-│  │  ├─ landing-page
-│  │  │  └─ landing-page.tsx
-│  │  ├─ layout
-│  │  │  ├─ app-bar
-│  │  │  │  └─ custom-app-bar.tsx
-│  │  │  └─ layout.tsx
-│  │  ├─ login
-│  │  │  └─ Login.tsx
-│  │  └─ register
-│  │     └─ Register.tsx
-│  ├─ old-screens
-│  │  ├─ common-styles.ts
-│  │  └─ index
-│  │     └─ Index.tsx
 │  ├─ pages
 │  │  ├─ home
-│  │  └─ index
-│  │     └─ index.tsx
+│  │  └─ landing-page
+│  │     ├─ landing-page.tsx
+│  │     └─ sections
+│  │        ├─ contact-section
+│  │        │  └─ contact-section.tsx
+│  │        ├─ login-section
+│  │        │  └─ login-section.tsx
+│  │        ├─ main-section
+│  │        │  └─ main-section.tsx
+│  │        └─ register-section
+│  │           └─ register-section.tsx
 │  ├─ Routes
 │  │  └─ Rotes
 │  │     └─ Routes.tsx

@@ -1,0 +1,51 @@
+{
+  "LangingPage": {
+    "login": "تسجيل الدخول",
+    "register": "تسجيل",
+    "contact": "اتصل بنا"
+  },
+  "MainScreen": {
+    "title": "مرحبًا بك في MedEyaAI",
+    "description": "شريكك في رعاية نظرك",
+    "description2": "نحن هنا لمساعدتك في احتياجات رعاية عينيك",
+    "getStarted": "ابدأ الآن"
+  },
+  "LoginSection": {
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "login": "تسجيل الدخول",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "enterEmail": "يرجى إدخال بريدك الإلكتروني",
+    "enterPassword": "يرجى إدخال كلمة المرور الخاصة بك"
+  },
+  "RegisterSection": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "register": "تسجيل",
+    "nameRequired": "يرجى إدخال اسمك!",
+    "emailRequired": "يرجى إدخال بريدك الإلكتروني!",
+    "validEmail": "يرجى إدخال بريد إلكتروني صالح!",
+    "passwordRequired": "يرجى إدخال كلمة المرور الخاصة بك!",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور!",
+    "passwordMatch": "كلمات المرور غير متطابقة!",
+    "enterName": "يرجى إدخال اسمك",
+    "enterEmail": "يرجى إدخال بريدك الإلكتروني",
+    "enterPassword": "يرجى إدخال كلمة المرور",
+    "confirmPasswordPlaceholder": "يرجى تأكيد كلمة المرور"
+  },
+  "ContactSection": {
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "message": "رسالة",
+    "send": "إرسال",
+    "nameRequired": "يرجى إدخال اسمك!",
+    "emailRequired": "يرجى إدخال بريدك الإلكتروني!",
+    "validEmail": "يرجى إدخال بريد إلكتروني صالح!",
+    "messageRequired": "يرجى إدخال رسالتك!",
+    "enterName": "يرجى إدخال اسمك",
+    "enterEmail": "يرجى إدخال بريدك الإلكتروني",
+    "enterMessage": "يرجى إدخال رسالتك"
+  }
+}
