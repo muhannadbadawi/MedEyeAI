@@ -9,6 +9,7 @@ import RegisterSection from "./sections/register-section/register-section";
 import ContactSection from "./sections/contact-section/contact-section";
 import MainSection from "./sections/main-section/main-section";
 import logo from "../../assets/new-logo.png";
+import { changeLanguage } from "../../i18n/i18n";
 
 const { Header, Content } = Layout;
 
@@ -20,7 +21,7 @@ const LandingPage = () => {
 
   const switchLang = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
-    i18n.changeLanguage(newLang);
+    changeLanguage(newLang);
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
   };
 
@@ -114,7 +115,7 @@ const LandingPage = () => {
         >
           {currentSection === "login" && <LoginSection />}
 
-          {currentSection === "register" && <RegisterSection />}
+          {currentSection === "register" && <RegisterSection navigateToLogin={setCurrentSection}/>}
 
           {currentSection === "contact" && <ContactSection />}
 

@@ -1,19 +1,25 @@
-import React from "react";
+import React, { SetStateAction } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-
+import { register } from "../../../../api/authService";
+interface IRegisterSectionProps {
+  navigateToLogin: (
+    value: SetStateAction<"none" | "login" | "register" | "contact">
+  ) => void;
+}
 const { Title } = Typography;
 
-const RegisterSection = () => {
+const RegisterSection = ({navigateToLogin}: IRegisterSectionProps) => {
   const { t } = useTranslation();
-
-  const onFinish = (values: {
+   
+  const onFinish = async (values: {
     name: string;
     email: string;
     password: string;
     confirmPassword: string;
   }) => {
-    console.log("Form values:", values);
+    await register(values);
+    navigateToLogin("login"); // Navigate to the login page after successful registration
   };
 
   const labelStyle = { color: "#fff" };
