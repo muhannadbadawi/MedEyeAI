@@ -1,8 +1,9 @@
-import { Form, Input, Button, Typography, message } from "antd";
+import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../../../api/authService";
 import toast from "react-hot-toast";
+import { AxiosError } from "axios";
 
 const { Title } = Typography;
 
@@ -20,20 +21,15 @@ const LoginSection = () => {
       } else {
         toast.error("Invalid email or password", { position: "bottom-center" });
       }
-    } catch (error: any) {
+    } catch (error: AxiosError) {
       if (error.response && error.response.status === 401) {
         toast.error("Invalid email or password", { position: "bottom-center" });
       } else {
         toast.error("Something went wrong. Please try again later.", {
           position: "bottom-center",
         });
-
-        // throw new Error("Something went wrong. Please try again later.");
       }
     }
-    //  catch {
-    //   toast.error("Login failed. Please try again.", { position: "bottom-center" });
-    // }
   };
 
   const labelStyle = { color: "#fff" };

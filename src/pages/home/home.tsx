@@ -1,65 +1,47 @@
 import React, { useState } from "react";
-import { Typography, Upload, Button, Image, message } from "antd";
+import { Button, Upload,  } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
-import type { UploadProps } from "antd";
-
-const { Title } = Typography;
+import { uploadImage } from "../../api/userService";
+import toast from "react-hot-toast";
 
 const Home: React.FC = () => {
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
-  const props: UploadProps = {
-    name: "file",
-    listType: "picture",
-    showUploadList: false,
-    beforeUpload: (file) => {
-      const isImage = file.type.startsWith("image/");
-      if (!isImage) {
-        message.error("You can only upload image files!");
-        return Upload.LIST_IGNORE;
+  const handleUploadChange = (info: any) => {
+    if (info.file.status === "done") {
+      toast.success(`${info.file.name} file uploaded successfully`);
+    } else if (info.file.status === "error") {
+      toast.error(`${info.file.name} file upload failed.`);
+    }
+  };
+
+  const handleSend = async () => {
+    if (imageFile) {
+      const result = await uploadImage(imageFile); // Call the uploadImage function
+      if (result) {
+        toast.success(`Prediction: ${result.prediction}, Confidence: ${result.confidence}`);
+      } else {
+        toast.error("Image upload failed.");
       }
-
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          setImageUrl(e.target.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-
-      return false; // Prevent auto upload
-    },
+    } else {
+      toast.error("Please upload an image first.");
+    }
   };
 
   return (
-    <div
-      style={{
-        padding: 20,
-        background: "linear-gradient(to right,rgb(155, 156, 156), #ffffff)",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "90vh",
-        height: "100%",
-      }}
-    >
-      <Title level={2}>Welcome to the Home Page</Title>
-      <p>This is a basic placeholder for your home screen.</p>
-
-      <Upload {...props}>
+    <div>
+      <Upload
+        beforeUpload={(file) => {
+          setImageFile(file);
+          return false; // Prevent auto-upload
+        }}
+        onChange={handleUploadChange}
+        showUploadList={false}
+      >
         <Button icon={<UploadOutlined />}>Upload Image</Button>
       </Upload>
 
-      {imageUrl && (
-        <div style={{ marginTop: 20 }}>
-          <Image
-            src={imageUrl}
-            alt="Uploaded preview"
-            style={{ maxHeight: 200 }}
-          />
-        </div>
-      )}
+      <Button onClick={handleSend}>Send Image for Prediction</Button>
     </div>
   );
 };

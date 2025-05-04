@@ -49,5 +49,11 @@
     "enterName": "Please enter your name",
     "enterEmail": "Please enter your email",
     "enterMessage": "Please enter your message"
+  },
+  "LogedinLayout": {
+    "logout": "Logout",
+    "profile": "Profile",
+    "home": "Home",
+    "contact": "Contact"
   }
 }

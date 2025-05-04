@@ -1,14 +1,7 @@
 import { Layout, Button, Space, Avatar } from "antd";
 import { useTranslation } from "react-i18next";
-// import wallpaper from "../../assets/macro-eye-iris.jpg";
 import englishFlag from "../../assets/flags/UK_flag_icon_round.svg";
 import arabicFlag from "../../assets/flags/Jordan_flag_icon_round.svg";
-// import { useState } from "react";
-// import LoginSection from "./sections/login-section/login-section";
-// import RegisterSection from "./sections/register-section/register-section";
-// import ContactSection from "./sections/contact-section/contact-section";
-// import MainSection from "./sections/main-section/main-section";
-// import logo from "../../assets/new-logo.png";
 import { changeLanguage } from "../../i18n/i18n";
 import { ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,10 +11,19 @@ const { Header, Content } = Layout;
 const LogedinLayout = ({ children }: { children: ReactNode }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const user = localStorage.getItem("user");
+  const userData = user ? JSON.parse(user) : null;
+  const firstLetter = userData?.name.charAt(0).toUpperCase();
+  
   const switchLang = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
     changeLanguage(newLang);
     document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
+  };
+
+  const logout = () => {
+    localStorage.removeItem("user");
+    navigate("/");
   };
 
   return (
@@ -53,20 +55,20 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
             }}
             onClick={() => {}}
           >
-            <Avatar style={{ backgroundColor: "#87d068" }}>L</Avatar>
-            Layan
+            <Avatar style={{ backgroundColor: "#87d068" }}>{firstLetter}</Avatar>
+            {userData.name}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {navigate("/home")}}>
-            {t("LangingPage.contacts", "Home")}
+            {t("LogedinLayout.home", "Home")}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
-            {t("LangingPage.profile", "Profile")}
+            {t("LogedinLayout.profile", "Profile")}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
-            {t("LangingPage.contact", "Contact")}
+            {t("LogedinLayout.contact", "Contact")}
           </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => {navigate("/")}}>
-            {t("LangingPage.Logout", "Logout")}
+          <Button type="link" style={{ color: "#fff" }} onClick={logout}>
+            {t("LogedinLayout.logout", "Logout")}
           </Button>
         </Space>
         <Button type="text" onClick={switchLang} style={{ color: "#fff" }}>
