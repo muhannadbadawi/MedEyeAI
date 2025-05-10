@@ -54,6 +54,7 @@
     "logout": "Logout",
     "profile": "Profile",
     "home": "Home",
-    "contact": "Contact"
+    "contact": "Contact",
+    "history": "Previous Analyses"
   }
 }

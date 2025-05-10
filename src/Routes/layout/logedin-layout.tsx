@@ -14,7 +14,7 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
   const user = localStorage.getItem("user");
   const userData = user ? JSON.parse(user) : null;
   const firstLetter = userData?.name.charAt(0).toUpperCase();
-  
+
   const switchLang = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
     changeLanguage(newLang);
@@ -31,6 +31,11 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
       {/* Top Bar */}
       <Header
         style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          zIndex: 1000,
           background:
             i18n.language === "en"
               ? "linear-gradient(to left,#001529, rgb(19, 54, 87))"
@@ -38,7 +43,7 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "0 rem",
+          padding: "0 1rem",
           height: "10vh",
         }}
       >
@@ -55,14 +60,45 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
             }}
             onClick={() => {}}
           >
-            <Avatar style={{ backgroundColor: "#87d068" }}>{firstLetter}</Avatar>
+            <span
+              style={{
+                background:
+                  "linear-gradient(135deg,rgb(7, 118, 209),rgb(74, 216, 248))",
+                color: "#fff",
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginRight: 8,
+                fontSize: "1rem",
+              }}
+            >
+              {firstLetter}
+            </span>
             {userData.name}
           </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => {navigate("/home")}}>
+          <Button
+            type="link"
+            style={{ color: "#fff" }}
+            onClick={() => {
+              navigate("/home");
+            }}
+          >
             {t("LogedinLayout.home", "Home")}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
             {t("LogedinLayout.profile", "Profile")}
+          </Button>
+          <Button
+            type="link"
+            style={{ color: "#fff" }}
+            onClick={() => {
+              navigate("/history");
+            }}
+          >
+            {t("LogedinLayout.history", "History")}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
             {t("LogedinLayout.contact", "Contact")}
@@ -83,9 +119,7 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
       </Header>
 
       {/* Page Content */}
-      <Content>
-        {children}
-      </Content>
+      <Content>{children}</Content>
     </Layout>
   );
 };

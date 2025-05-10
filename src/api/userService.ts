@@ -4,9 +4,17 @@ import { message } from "antd";
 // Define the uploadImage function
 export const uploadImage = async (imageFile: File) => {
   try {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      message.error("User not found. Please log in.");
+      return null;
+    }
+    const userId = JSON.parse(user).user_id; // Extract userId from localStorage
+    console.log("userId: ", userId);
     // Create a FormData object to append the image
     const formData = new FormData();
     formData.append("image", imageFile);
+    formData.append("userId", userId); // Optional: append filename
 
     // Send the image to the Flask API
     const response = await api.post("/api/upload", formData, {
@@ -14,6 +22,7 @@ export const uploadImage = async (imageFile: File) => {
         "Content-Type": "multipart/form-data", // Specify form data header
       },
     });
+    console.log("response: ", response);
 
     // Handle the response from the server
     if (response.data) {
@@ -26,6 +35,36 @@ export const uploadImage = async (imageFile: File) => {
   } catch (error) {
     console.error("Error uploading image:", error);
     message.error("There was an error uploading the image.");
+    return null;
+  }
+};
+
+export const getHistory = async () => {
+  try {
+    const user = localStorage.getItem("user");
+    if (!user) {
+      message.error("User not found. Please log in.");
+      return null;
+    }
+    const email = JSON.parse(user).email; // Extract email from localStorage
+    console.log("email: ", email);
+
+    // Send a request to the Flask API to get the history
+    const response = await api.get(`/api/getHistory`, {
+      params: { email },
+    });
+    console.log("response: ", response);
+
+    // Handle the response from the server
+    if (response.data) {
+      return response.data; // Return the history data
+    } else {
+      message.error("Failed to fetch history.");
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching history:", error);
+    message.error("There was an error fetching the history.");
     return null;
   }
 };

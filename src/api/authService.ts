@@ -11,3 +11,8 @@ export const register = async (userData: { name: string, email: string; password
   const response = await api.post("/api/register", userData);
   return response.data;
 };
+
+export const forgetPassword = async (email: string, newPassword: string) => {
+  const response = await api.post("/api/forgetPassword", { email, newPassword });
+  return response.data;
+};
