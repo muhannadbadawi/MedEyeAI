@@ -6,10 +6,12 @@ import {
   message,
   Image,
   Card,
-  Progress,
   Empty,
+  Tag,
+  Tooltip,
 } from "antd";
 import { getHistory } from "../../api/userService";
+import { ClockCircleOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
@@ -39,16 +41,16 @@ const History: React.FC = () => {
 
   const columns = [
     {
-      title: "Image",
+      title: "Scan",
       dataIndex: "filename",
       key: "image",
-      align: "center",
+      align: "center" as const,
       render: (filename: string) => (
         <Image
           width={75}
           src={`http://localhost:5000/api/images/${filename}`}
           alt="Scan"
-          style={{ borderRadius: 8 }}
+          style={{ borderRadius: 10, objectFit: "cover" }}
           preview={{ mask: "Click to Zoom" }}
           fallback="https://via.placeholder.com/100?text=No+Image"
         />
@@ -58,32 +60,45 @@ const History: React.FC = () => {
       title: "Prediction",
       dataIndex: "prediction",
       key: "prediction",
-      align: "center",
+      align: "center" as const,
       render: (text: string) => (
-        <span style={{ fontWeight: 500, color: "#3f3f3f" }}>{text}</span>
+        <Tag
+          color={
+            text === "Normal"
+              ? "green"
+              : text === "Cataract"
+              ? "volcano"
+              : text === "Glaucoma"
+              ? "geekblue"
+              : text === "Diabetic Retinopathy"
+              ? "purple"
+              : "default"
+          }
+          style={{ fontSize: "0.95rem", padding: "0.3rem 1rem" }}
+        >
+          {text}
+        </Tag>
       ),
     },
     {
       title: "Confidence",
       dataIndex: "confidence",
       key: "confidence",
-      align: "center",
-      render: (value: number) => (
-        <Progress
-          percent={parseFloat((value * 100).toFixed(1))}
-          size="small"
-          status="active"
-          strokeColor={{ from: "#108ee9", to: "#87d068" }}
-        />
+      align: "center" as const,
+      render: (value: string) => (
+        <Tooltip title={value}>
+          <Tag color={parseFloat(value.replace("%", "")) > 50 ? "green": "red"}>{value}</Tag>
+        </Tooltip>
       ),
     },
     {
-      title: "Timestamp",
+      title: "Date",
       dataIndex: "timestamp",
       key: "timestamp",
-      align: "center",
+      align: "center" as const,
       render: (value: string) => (
-        <span style={{ color: "#777" }}>
+        <span style={{ color: "#666", fontSize: "0.9rem" }}>
+          <ClockCircleOutlined style={{ marginRight: 6 }} />
           {new Date(value).toLocaleString()}
         </span>
       ),
@@ -91,51 +106,39 @@ const History: React.FC = () => {
   ];
 
   return (
-    <div
+    <Card
       style={{
-        padding: "2rem",
-        display: "flex",
-        justifyContent: "center",
-        height: "100vh",
+        width: "100%",
+        maxWidth: 1100,
+        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
+        borderRadius: 16,
+        background: "#fff",
+        margin: "0.5rem auto",
+        padding: "1.5rem",
+        minHeight: "80vh",
       }}
     >
-      <Card
-        style={{
-          width: "100%",
-          maxWidth: 1000,
-          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-          borderRadius: 12,
-          backgroundColor: "#f0f2f5",
-          height: "100%",
-          overflow: "hidden",
-        }}
-      >
-        <Title level={2} style={{ textAlign: "center", marginBottom: 24 }}>
-          Prediction History
-        </Title>
+      <Title level={2} style={{ textAlign: "center", marginBottom: 30 }}>
+        Prediction History
+      </Title>
 
-        {loading ? (
-          <Spin
-            size="large"
-            style={{ display: "block", margin: "2rem auto" }}
-          />
-        ) : historyData.length ? (
-          <Table
-            dataSource={historyData}
-            columns={columns}
-            rowKey={(record) => record.timestamp + record.filename}
-            pagination={{ pageSize: 5 }}
-            bordered
-            scroll={{ y: 400 }}
-          />
-        ) : (
-          <Empty
-            description="No history records found"
-            style={{ padding: "2rem" }}
-          />
-        )}
-      </Card>
-    </div>
+      {loading ? (
+        <Spin size="large" style={{ display: "block", margin: "3rem auto" }} />
+      ) : historyData.length ? (
+        <Table
+          dataSource={historyData}
+          columns={columns}
+          rowKey={(record) => record.timestamp + record.filename}
+          pagination={{ pageSize: 5 }}
+          bordered
+        />
+      ) : (
+        <Empty
+          description="No history records found"
+          style={{ padding: "4rem 0" }}
+        />
+      )}
+    </Card>
   );
 };
 

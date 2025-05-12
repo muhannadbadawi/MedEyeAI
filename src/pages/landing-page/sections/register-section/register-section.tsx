@@ -1,4 +1,4 @@
-import React, { SetStateAction } from "react";
+import { SetStateAction } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { register } from "../../../../api/authService";

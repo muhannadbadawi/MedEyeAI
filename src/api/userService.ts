@@ -17,12 +17,11 @@ export const uploadImage = async (imageFile: File) => {
     formData.append("userId", userId); // Optional: append filename
 
     // Send the image to the Flask API
-    const response = await api.post("/api/upload", formData, {
+    const response = await api.post("/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data", // Specify form data header
       },
     });
-    console.log("response: ", response);
 
     // Handle the response from the server
     if (response.data) {
@@ -47,13 +46,11 @@ export const getHistory = async () => {
       return null;
     }
     const email = JSON.parse(user).email; // Extract email from localStorage
-    console.log("email: ", email);
 
     // Send a request to the Flask API to get the history
-    const response = await api.get(`/api/getHistory`, {
+    const response = await api.get(`/getHistory`, {
       params: { email },
     });
-    console.log("response: ", response);
 
     // Handle the response from the server
     if (response.data) {
@@ -65,6 +62,28 @@ export const getHistory = async () => {
   } catch (error) {
     console.error("Error fetching history:", error);
     message.error("There was an error fetching the history.");
+    return null;
+  }
+};
+
+export const sendOtp = async (email: string) => {
+  try {
+    const response = await api.post("/sendOtp", { email });
+    return response;
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+    message.error("There was an error sending the OTP.");
+    return null;
+  }
+};
+
+export const resetPassword = async (email: string, newPassword: string) => {
+  try {
+    const response = await api.post("/forgetPassword", { email, newPassword });
+    return response;
+  } catch (error) {
+    console.error("Error verifying OTP:", error);
+    message.error("There was an error verifying the OTP.");
     return null;
   }
 };

@@ -53,17 +53,11 @@ const Home: React.FC = () => {
       style={{
         display: "flex",
         justifyContent: "center",
-        padding: "40px 16px",
+        alignItems:"center",
         height: "85vh",
-        background: "#f0f2f5",
         gap: 16,
-        alignItems: "center",
-        borderRadius: 16,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
         margin: "0 auto",
         maxWidth: 900,
-        border: "1px solid #f0f0f0",
-        backgroundColor: "#ffffff",
       }}
     >
       <Card
@@ -75,10 +69,11 @@ const Home: React.FC = () => {
           textAlign: "center",
           padding: 24,
           background: "#ffffff",
+          margin: "0.5rem auto",
         }}
         bordered={false}
       >
-        <Title level={3} style={{ marginBottom: 4 }}>
+        <Title level={3}>
           Eye Condition Predictor
         </Title>
         <Text type="secondary">Upload an eye image to get a diagnosis</Text>
@@ -143,6 +138,7 @@ const Home: React.FC = () => {
             textAlign: "center",
             padding: 24,
             background: "#ffffff",
+            margin: "0.5rem auto",
           }}
           bordered={false}
         >
@@ -187,7 +183,7 @@ const Home: React.FC = () => {
                 </Text>
                 <br />
                 <Text>
-                  <strong>Confidence:</strong> {predictionResult.confidence}%
+                  <strong>Confidence:</strong> {predictionResult.confidence}
                 </Text>
               </div>
             </Card>

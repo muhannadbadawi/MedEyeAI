@@ -3,6 +3,7 @@ import LandingPage from "../../pages/landing-page/landing-page";
 import Home from "../../pages/home/home";
 import LogedinLayout from "../layout/logedin-layout";
 import History from "../../pages/history/history";
+import Profile from "../../pages/profile/profile";
 
 export const router = createBrowserRouter([
   {
@@ -25,4 +26,12 @@ export const router = createBrowserRouter([
       </LogedinLayout>
     ),
   },
+  {
+    path: "profile",
+    element: (
+      <LogedinLayout>
+        <Profile/>
+      </LogedinLayout>
+    )
+  }
 ]);

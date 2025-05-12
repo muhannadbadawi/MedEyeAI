@@ -28,7 +28,7 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
-      {/* Top Bar */}
+      {/* Header */}
       <Header
         style={{
           position: "fixed",
@@ -39,65 +39,47 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
           background:
             i18n.language === "en"
               ? "linear-gradient(to left,#001529, rgb(19, 54, 87))"
-              : "linear-gradient(to left,rgb(19, 54, 87),  #001529)",
+              : "linear-gradient(to left,rgb(19, 54, 87), #001529)",
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "0 1rem",
+          padding: "0 2rem",
           height: "10vh",
         }}
       >
-        <Space>
+        {/* Left Section */}
+        <Space size="large">
           <Button
             type="link"
             style={{
               color: "#fff",
-              fontSize: "1.2rem",
-              fontWeight: "bold",
+              fontSize: "1.1rem",
+              fontWeight: 500,
               display: "flex",
               alignItems: "center",
-              justifyContent: "center",
             }}
             onClick={() => {}}
           >
-            <span
+            <Avatar
               style={{
-                background:
-                  "linear-gradient(135deg,rgb(7, 118, 209),rgb(74, 216, 248))",
-                color: "#fff",
-                width: 32,
-                height: 32,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                backgroundColor: "#1890ff",
                 marginRight: 8,
-                fontSize: "1rem",
+                verticalAlign: "middle",
               }}
+              size="small"
             >
               {firstLetter}
-            </span>
-            {userData.name}
+            </Avatar>
+            {userData?.name}
           </Button>
-          <Button
-            type="link"
-            style={{ color: "#fff" }}
-            onClick={() => {
-              navigate("/home");
-            }}
-          >
+
+          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/home")}>
             {t("LogedinLayout.home", "Home")}
           </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
+          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/profile")}>
             {t("LogedinLayout.profile", "Profile")}
           </Button>
-          <Button
-            type="link"
-            style={{ color: "#fff" }}
-            onClick={() => {
-              navigate("/history");
-            }}
-          >
+          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/history")}>
             {t("LogedinLayout.history", "History")}
           </Button>
           <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
@@ -107,20 +89,34 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
             {t("LogedinLayout.logout", "Logout")}
           </Button>
         </Space>
-        <Button type="text" onClick={switchLang} style={{ color: "#fff" }}>
-          {/* Display flag based on current language */}
+
+        {/* Language Switch */}
+        <Button
+          type="text"
+          onClick={switchLang}
+          style={{
+            color: "#fff",
+            display: "flex",
+            alignItems: "center",
+            gap: 8,
+            fontSize: "1rem",
+            padding: 0,
+            border: "none",
+          }}
+        >
           <img
             src={i18n.language === "en" ? arabicFlag : englishFlag}
-            alt="Language Flag"
-            style={{ width: 35, height: 30, marginRight: 8 }}
+            alt="Lang"
+            style={{ width: 30, height: 30 }}
           />
           {i18n.language === "en" ? "العربية" : "English"}
         </Button>
       </Header>
 
-      {/* Page Content */}
-      <Content>{children}</Content>
+      {/* Content */}
+      <Content style={{ paddingTop: "10vh" }}>{children}</Content>
     </Layout>
   );
 };
+
 export default LogedinLayout;
