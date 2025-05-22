@@ -6,6 +6,7 @@ import { login } from "../../../../api/authService";
 import { resetPassword, sendOtp } from "../../../../api/userService";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
+import { UserRole } from "../../../../enums/userRole";
 
 const { Title } = Typography;
 
@@ -17,6 +18,7 @@ const LoginSection = () => {
   const [step, setStep] = useState<"email" | "otp" | "reset">("email");
   const [email, setEmail] = useState("");
   const [otp, setOtp] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const openForgotPasswordModal = () => {
     setIsModalOpen(true);
@@ -31,7 +33,9 @@ const LoginSection = () => {
 
   const onSendOtp = async (email: string) => {
     try {
+      setIsLoading(true);
       const response = await sendOtp(email);
+      setIsLoading(false);
       if (response.status === 200) {
         toast.success("OTP sent successfully!");
         setOtp(response.data.otp); // Assuming the OTP is returned
@@ -47,10 +51,18 @@ const LoginSection = () => {
   const onFinish = async (values: { email: string; password: string }) => {
     const { email, password } = values;
     try {
-      const user = await login(email, password);
+      setIsLoading(true);
+      const response = await login(email, password);
+
+      const user = (response as { user: any }).user;
+      setIsLoading(false);
+
       if (user) {
         localStorage.setItem("user", JSON.stringify(user));
-        navigate("/home");
+        if(user.role === UserRole.Client)
+          navigate("client/home");
+        else
+          navigate("admin/home")
       } else {
         toast.error("Invalid email or password", { position: "bottom-center" });
       }
@@ -63,6 +75,7 @@ const LoginSection = () => {
           position: "bottom-center",
         });
       }
+      setIsLoading(false);
     }
   };
 
@@ -81,34 +94,66 @@ const LoginSection = () => {
         onFinish={onFinish}
       >
         <Form.Item
-          label={<span style={labelStyle}>{t("LoginSection.email", "Email")}</span>}
+          label={
+            <span style={labelStyle}>{t("LoginSection.email", "Email")}</span>
+          }
           name="email"
           rules={[
-            { required: true, message: t("LoginSection.emailRequired", "Please input your email!") },
-            { type: "email", message: t("LoginSection.validEmail", "Please input a valid email!") },
+            {
+              required: true,
+              message: t(
+                "LoginSection.emailRequired",
+                "Please input your email!"
+              ),
+            },
+            {
+              type: "email",
+              message: t(
+                "LoginSection.validEmail",
+                "Please input a valid email!"
+              ),
+            },
           ]}
         >
-          <Input placeholder={t("LoginSection.enterEmail", "Enter your email")} />
+          <Input
+            placeholder={t("LoginSection.enterEmail", "Enter your email")}
+          />
         </Form.Item>
 
         <Form.Item
-          label={<span style={labelStyle}>{t("LoginSection.password", "Password")}</span>}
+          label={
+            <span style={labelStyle}>
+              {t("LoginSection.password", "Password")}
+            </span>
+          }
           name="password"
           rules={[
-            { required: true, message: t("LoginSection.passwordRequired", "Please input your password!") },
+            {
+              required: true,
+              message: t(
+                "LoginSection.passwordRequired",
+                "Please input your password!"
+              ),
+            },
           ]}
         >
-          <Input.Password placeholder={t("LoginSection.enterPassword", "Enter your password")} />
+          <Input.Password
+            placeholder={t("LoginSection.enterPassword", "Enter your password")}
+          />
         </Form.Item>
 
         <Form.Item>
-          <Button type="link" style={{ padding: 0, color: "#1890ff" }} onClick={openForgotPasswordModal}>
+          <Button
+            type="link"
+            style={{ padding: 0, color: "#1890ff" }}
+            onClick={openForgotPasswordModal}
+          >
             {t("LoginSection.forgotPassword", "Forgot Password?")}
           </Button>
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" block htmlType="submit">
+          <Button type="primary" block htmlType="submit" loading={isLoading}>
             {t("LoginSection.login", "Login")}
           </Button>
         </Form.Item>
@@ -133,14 +178,34 @@ const LoginSection = () => {
               label={t("LoginSection.email", "Email")}
               name="email"
               rules={[
-                { required: true, message: t("LoginSection.emailRequired", "Please input your email!") },
-                { type: "email", message: t("LoginSection.validEmail", "Please input a valid email!") },
+                {
+                  required: true,
+                  message: t(
+                    "LoginSection.emailRequired",
+                    "Please input your email!"
+                  ),
+                },
+                {
+                  type: "email",
+                  message: t(
+                    "LoginSection.validEmail",
+                    "Please input a valid email!"
+                  ),
+                },
               ]}
             >
-              <Input placeholder={t("LoginSection.enterEmail", "Enter your email")} autoFocus />
+              <Input
+                placeholder={t("LoginSection.enterEmail", "Enter your email")}
+                autoFocus
+              />
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" block>
+              <Button
+                type="primary"
+                htmlType="submit"
+                block
+                loading={isLoading}
+              >
                 {t("LoginSection.sendOtp", "Send OTP")}
               </Button>
             </Form.Item>
@@ -162,9 +227,17 @@ const LoginSection = () => {
             <Form.Item
               label={t("LoginSection.otp", "OTP")}
               name="otp"
-              rules={[{ required: true, message: t("LoginSection.otpRequired", "Please input OTP!") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("LoginSection.otpRequired", "Please input OTP!"),
+                },
+              ]}
             >
-              <Input placeholder={t("LoginSection.enterOtp", "Enter your OTP")} autoFocus />
+              <Input
+                placeholder={t("LoginSection.enterOtp", "Enter your OTP")}
+                autoFocus
+              />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" block>
@@ -190,9 +263,23 @@ const LoginSection = () => {
             <Form.Item
               label={t("LoginSection.newPassword", "New Password")}
               name="newPassword"
-              rules={[{ required: true, message: t("LoginSection.passwordRequired", "Please input your new password!") }]}
+              rules={[
+                {
+                  required: true,
+                  message: t(
+                    "LoginSection.passwordRequired",
+                    "Please input your new password!"
+                  ),
+                },
+              ]}
             >
-              <Input.Password placeholder={t("LoginSection.enterNewPassword", "Enter new password")} autoFocus />
+              <Input.Password
+                placeholder={t(
+                  "LoginSection.enterNewPassword",
+                  "Enter new password"
+                )}
+                autoFocus
+              />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit" block>

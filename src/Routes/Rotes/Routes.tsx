@@ -1,9 +1,14 @@
 import { createBrowserRouter } from "react-router-dom";
 import LandingPage from "../../pages/landing-page/landing-page";
-import Home from "../../pages/home/home";
+import Home from "../../pages/client/home/home";
 import LogedinLayout from "../layout/logedin-layout";
-import History from "../../pages/history/history";
+import History from "../../pages/client/history/history";
+import Contact from "../../pages/client/contact/contact";
+import { UserRole } from "../../enums/userRole";
+import AdminHome from "../../pages/admin/home/admin-home";
 import Profile from "../../pages/profile/profile";
+import UserManagement from "../../pages/admin/users/users-management";
+import NotFoundPage from "../../pages/not-found/not-found";
 
 export const router = createBrowserRouter([
   {
@@ -11,27 +16,26 @@ export const router = createBrowserRouter([
     element: <LandingPage />,
   },
   {
-    path: "/home",
-    element: (
-      <LogedinLayout>
-        <Home />
-      </LogedinLayout>
-    ),
+    path: "/client",
+    element: <LogedinLayout role={UserRole.Client} />,
+    children: [
+      { path: "home", element: <Home /> },
+      { path: "history", element: <History /> },
+      { path: "profile", element: <Profile /> },
+      { path: "contact", element: <Contact /> },
+    ],
   },
   {
-    path: "/history",
-    element: (
-      <LogedinLayout>
-        <History />
-      </LogedinLayout>
-    ),
+    path: "/admin",
+    element: <LogedinLayout role={UserRole.Admin} />,
+    children: [
+      { path: "home", element: <AdminHome /> },
+      { path: "users", element: <UserManagement /> },
+      { path: "profile", element: <Profile /> },
+    ],
   },
   {
-    path: "profile",
-    element: (
-      <LogedinLayout>
-        <Profile/>
-      </LogedinLayout>
-    )
-  }
+    path: "*",
+    element: <NotFoundPage />,
+  },
 ]);

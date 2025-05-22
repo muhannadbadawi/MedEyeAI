@@ -1,19 +1,20 @@
-import { Layout, Button, Space, Avatar } from "antd";
+import { Layout, Button, Space, Avatar, Image } from "antd";
 import { useTranslation } from "react-i18next";
 import englishFlag from "../../assets/flags/UK_flag_icon_round.svg";
 import arabicFlag from "../../assets/flags/Jordan_flag_icon_round.svg";
 import { changeLanguage } from "../../i18n/i18n";
-import { ReactNode } from "react";
+import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import { UserRole } from "../../enums/userRole";
 
 const { Header, Content } = Layout;
 
-const LogedinLayout = ({ children }: { children: ReactNode }) => {
+const LogedinLayout = ({ role }: { role: UserRole }) => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const user = localStorage.getItem("user");
   const userData = user ? JSON.parse(user) : null;
-  const firstLetter = userData?.name.charAt(0).toUpperCase();
+  const firstLetter = userData?.name?.charAt(0).toUpperCase();
 
   const switchLang = () => {
     const newLang = i18n.language === "en" ? "ar" : "en";
@@ -48,7 +49,7 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
         }}
       >
         {/* Left Section */}
-        <Space size="large">
+        <Space size="small">
           <Button
             type="link"
             style={{
@@ -58,33 +59,93 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
               display: "flex",
               alignItems: "center",
             }}
-            onClick={() => {}}
           >
-            <Avatar
-              style={{
-                backgroundColor: "#1890ff",
-                marginRight: 8,
-                verticalAlign: "middle",
-              }}
-              size="small"
-            >
-              {firstLetter}
-            </Avatar>
+            {userData?.profile_picture ? (
+              <Image
+                src={`http://localhost:5000/api/profilePicture/${userData.profile_picture}`}
+                alt="Scan"
+                style={{
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  width: "40px",
+                  height: "40px",
+                }}
+                preview={false}
+              />
+            ) : (
+              <Avatar
+                style={{
+                  backgroundColor: "#1890ff",
+                  marginRight: 8,
+                  verticalAlign: "middle",
+                }}
+                size="large"
+              >
+                {firstLetter}
+              </Avatar>
+            )}
+
             {userData?.name}
           </Button>
 
-          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/home")}>
-            {t("LogedinLayout.home", "Home")}
-          </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/profile")}>
-            {t("LogedinLayout.profile", "Profile")}
-          </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => navigate("/history")}>
-            {t("LogedinLayout.history", "History")}
-          </Button>
-          <Button type="link" style={{ color: "#fff" }} onClick={() => {}}>
-            {t("LogedinLayout.contact", "Contact")}
-          </Button>
+          {/* Navigation Buttons */}
+          {role === UserRole.Client ? (
+            <>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("home")}
+              >
+                {t("LogedinLayout.home", "Home")}
+              </Button>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("profile")}
+              >
+                {t("LogedinLayout.profile", "Profile")}
+              </Button>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("history")}
+              >
+                {t("LogedinLayout.history", "History")}
+              </Button>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("contact")}
+              >
+                {t("LogedinLayout.contact", "Contact")}
+              </Button>
+            </>
+          ) : role === UserRole.Admin ? (
+            <>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("home")}
+              >
+                {t("LogedinLayout.home", "Home")}
+              </Button>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("users")}
+              >
+                {t("LogedinLayout.users", "Users")}
+              </Button>
+              <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("profile")}
+              >
+                {t("LogedinLayout.profile", "Profile")}
+              </Button>
+            </>
+          ) : null}
+
           <Button type="link" style={{ color: "#fff" }} onClick={logout}>
             {t("LogedinLayout.logout", "Logout")}
           </Button>
@@ -114,7 +175,9 @@ const LogedinLayout = ({ children }: { children: ReactNode }) => {
       </Header>
 
       {/* Content */}
-      <Content style={{ paddingTop: "10vh" }}>{children}</Content>
+      <Content style={{ paddingTop: "10vh" }}>
+        <Outlet />
+      </Content>
     </Layout>
   );
 };

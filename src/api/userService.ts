@@ -1,6 +1,7 @@
 import api from "./axios"; // your axios instance for making API calls
 import { message } from "antd";
-
+const user = localStorage.getItem("user");
+const userData = user ? JSON.parse(user) : null;
 // Define the uploadImage function
 export const uploadImage = async (imageFile: File) => {
   try {
@@ -9,8 +10,7 @@ export const uploadImage = async (imageFile: File) => {
       message.error("User not found. Please log in.");
       return null;
     }
-    const userId = JSON.parse(user).user_id; // Extract userId from localStorage
-    console.log("userId: ", userId);
+    const userId = JSON.parse(user).id; // Extract userId from localStorage
     // Create a FormData object to append the image
     const formData = new FormData();
     formData.append("image", imageFile);
@@ -86,4 +86,55 @@ export const resetPassword = async (email: string, newPassword: string) => {
     message.error("There was an error verifying the OTP.");
     return null;
   }
+};
+
+export const editProfile = async (editProfileData: {
+  email: string;
+  name: string;
+  age: number;
+  gender: string;
+  picture: File | null;
+}) => {
+  const formData = new FormData();
+  formData.append("email", editProfileData.email);
+  formData.append("name", editProfileData.name);
+  formData.append("age", String(editProfileData.age));
+  formData.append("gender", editProfileData.gender);
+
+  if (editProfileData.picture) {
+    formData.append("picture", editProfileData.picture);
+  }
+
+  // ✅ Add the removePicture flag explicitly
+
+  const response = await api.put("/editProfile", formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+
+  return { data: response.data, status: response.status };
+};
+
+export const getCurrentUser = async () => {
+  const response = await api.get(`/getUserById`, {
+    params: { id: userData.id },
+  });
+
+  return response.data as {
+    id: string;
+    name: string;
+    email: string;
+    age: number;
+    gender: string;
+    profile_picture: string;
+  };
+};
+
+export const changePassword = async (data: {
+  currentPassword: string;
+  newPassword: string;
+}) => {
+  const response = await api.post("/changePassword", {...data, email:userData.email});
+  return response;
 };

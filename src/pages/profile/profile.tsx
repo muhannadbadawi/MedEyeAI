@@ -11,31 +11,92 @@ import {
   message,
   Divider,
   Space,
+  Select,
+  Image,
 } from "antd";
 import {
   UserOutlined,
   UploadOutlined,
   LockOutlined,
   SaveOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
+import {
+  changePassword,
+  editProfile,
+  getCurrentUser,
+} from "../../api/userService";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
 const Profile = () => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-  const user = localStorage.getItem('user')
+  const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const user = localStorage.getItem("user");
   const userData = user ? JSON.parse(user) : null;
+  const [imageURL, setImageURL] = useState<string | null>(
+    userData?.profile_picture
+      ? `http://localhost:5000/api/profilePicture/${userData.profile_picture}`
+      : null
+  );
 
-  const handleSave = (values: any) => {
-    console.log("Saved values:", values);
-    message.success("Profile updated successfully!");
+  const handleSave = async (values: {
+    age: number;
+    email: string;
+    name: string;
+    gender: string;
+  }) => {
+    console.log("values: ", values);
+    setIsLoading(true);
+    console.log("imageFile: ", !imageFile);
+    console.log("imageURL: ", !imageURL);
+
+    try {
+      await editProfile({
+        ...values,
+        picture: imageFile,
+      });
+
+      const updatedUser = await getCurrentUser();
+      console.log("updatedUser: ", updatedUser);
+
+      // ⬇️ Update localStorage
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+
+      // ⬇️ Update form fields with the latest data
+      form.setFieldsValue({
+        name: updatedUser.name,
+        email: updatedUser.email,
+        age: updatedUser.age,
+        gender: updatedUser.gender,
+      });
+
+      // ⬇️ Update image preview if profile picture changed
+      if (updatedUser.profile_picture) {
+        setImageURL(
+          `http://localhost:5000/api/profilePicture/${updatedUser.profile_picture}`
+        );
+      }
+      console.log("updatedUser: ", updatedUser);
+
+      message.success("Profile updated successfully!");
+    } catch {
+      message.error("Failed to update profile.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handlePasswordChange = (values: any) => {
-    console.log("Password change:", values);
-    message.success("Password updated successfully!");
+  const handlePasswordChange = async (values: {
+    currentPassword: string;
+    newPassword: string;
+  }) => {
+    await changePassword(values);
     setIsModalVisible(false);
   };
 
@@ -45,7 +106,7 @@ const Profile = () => {
       message.error("You can only upload image files!");
       return false;
     }
-
+    setImageFile(file);
     const reader = new FileReader();
     reader.onload = () => {
       setAvatarUrl(reader.result as string);
@@ -53,6 +114,13 @@ const Profile = () => {
     reader.readAsDataURL(file);
 
     return false;
+  };
+
+  const handleRemovePicture = () => {
+    setImageURL(null);
+    setAvatarUrl(null);
+    setImageFile(null);
+    message.info("Profile picture removed. Don’t forget to save changes.");
   };
 
   return (
@@ -67,16 +135,8 @@ const Profile = () => {
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <Title level={2} style={{ textAlign: "center" }}>
-          Profile
-        </Title>
-        <Text
-          type="secondary"
-          style={{ display: "block", textAlign: "center" }}
-        >
-          Manage your personal information
-        </Text>
-
+        <Title level={2}>{t("profilePage.title")}</Title>
+        <Text type="secondary">{t("profilePage.subTitle")}</Text>
         <Divider />
       </div>
 
@@ -84,52 +144,108 @@ const Profile = () => {
         form={form}
         layout="vertical"
         onFinish={handleSave}
-        initialValues={{ name: userData.name, email: userData.email }}
+        initialValues={{
+          name: userData?.name,
+          email: userData?.email,
+          age: userData?.age,
+          gender: userData?.gender,
+        }}
       >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               width: "40%",
+              gap: 10,
             }}
           >
-            <Avatar
-              size={110}
-              src={avatarUrl}
-              icon={!avatarUrl && <UserOutlined />}
-              style={{
-                marginBottom: 16,
-                boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                border: "3px solid #f0f0f0",
-              }}
-            />
+            {imageURL ? (
+              <Image
+                src={imageURL}
+                alt="Profile"
+                style={{
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  width: "100px",
+                  height: "100px",
+                }}
+                fallback="https://via.placeholder.com/100?text=No+Image"
+              />
+            ) : (
+              <Avatar
+                size={110}
+                src={avatarUrl}
+                icon={!avatarUrl && <UserOutlined />}
+                style={{
+                  marginBottom: 16,
+                  boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+                  border: "3px solid #f0f0f0",
+                }}
+              />
+            )}
             <Upload showUploadList={false} beforeUpload={beforeUpload}>
               <Button icon={<UploadOutlined />} size="small" type="link">
-                Change Profile Picture
+                {t("profilePage.changeProfilePicture")}
               </Button>
             </Upload>
+            {(!!imageURL || !!avatarUrl) && (
+              <Button
+                icon={<DeleteOutlined />}
+                danger
+                onClick={handleRemovePicture}
+              >
+                {t("profilePage.removePicture")}
+              </Button>
+            )}
+
+            <Form.Item
+              label={t("profilePage.gender")}
+              name="gender"
+              rules={[
+                {
+                  required: true,
+                  message: t("profilePage.pleaseSelectGender"),
+                },
+              ]}
+              style={{ paddingTop: imageURL ? 0 : 4, width: "90%" }}
+            >
+              <Select placeholder={t("profilePage.selectGender")}>
+                <Select.Option value="Male">
+                  {t("profilePage.male")}
+                </Select.Option>
+                <Select.Option value="Female">
+                  {t("profilePage.female")}
+                </Select.Option>
+              </Select>
+            </Form.Item>
           </div>
           <div style={{ width: "60%" }}>
-            <Form.Item
-              label="Email"
-              name="email"
-            >
-              <Input placeholder="Enter your email" disabled/>
+            <Form.Item label={t("profilePage.email")} name="email">
+              <Input disabled />
             </Form.Item>
             <Form.Item
-              label="Name"
+              label={t("profilePage.name")}
               name="name"
-              rules={[{ required: true, message: "Please enter your name" }]}
+              rules={[
+                { required: true, message: t("profilePage.nameRequired") },
+              ]}
             >
-              <Input placeholder="Enter your name" />
+              <Input placeholder={t("profilePage.enterName")} />
+            </Form.Item>
+            <Form.Item
+              label={t("profilePage.age")}
+              name="age"
+              rules={[
+                { required: true, message: t("profilePage.ageRequired") },
+                {
+                  pattern: /^\d+$/,
+                  message: "Age must be a number",
+                },
+              ]}
+            >
+              <Input placeholder={t("profilePage.enterAge")} />
             </Form.Item>
           </div>
         </div>
@@ -142,8 +258,9 @@ const Profile = () => {
               htmlType="submit"
               block
               size="large"
+              loading={isLoading}
             >
-              Save Changes
+              {t("profilePage.saveChanges")}
             </Button>
             <Button
               icon={<LockOutlined />}
@@ -151,54 +268,70 @@ const Profile = () => {
               size="large"
               onClick={() => setIsModalVisible(true)}
             >
-              Change Password
+              {t("profilePage.changePassword")}
             </Button>
           </Space>
         </Form.Item>
       </Form>
 
       <Modal
-        title="Change Password"
+        title={t("profilePage.changePassword")}
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={null}
       >
         <Form layout="vertical" onFinish={handlePasswordChange}>
           <Form.Item
-            label="Current Password"
+            label={t("profilePage.currentPassword")}
             name="currentPassword"
-            rules={[{ required: true, message: "Enter current password" }]}
+            rules={[
+              {
+                required: true,
+                message: t("profilePage.currentPasswordRequired"),
+              },
+            ]}
           >
-            <Input.Password placeholder="Current password" />
+            <Input.Password
+              placeholder={t("profilePage.enterCurrentPassword")}
+            />
           </Form.Item>
           <Form.Item
-            label="New Password"
+            label={t("profilePage.newPassword")}
             name="newPassword"
-            rules={[{ required: true, message: "Enter new password" }]}
+            rules={[
+              { required: true, message: t("profilePage.newPasswordRequired") },
+            ]}
           >
-            <Input.Password placeholder="New password" />
+            <Input.Password placeholder={t("profilePage.enterNewPassword")} />
           </Form.Item>
           <Form.Item
-            label="Confirm New Password"
+            label={t("profilePage.confirmNewPassword")}
             name="confirmPassword"
             dependencies={["newPassword"]}
             rules={[
-              { required: true, message: "Confirm your new password" },
+              {
+                required: true,
+                message: t("profilePage.confirmNewPasswordRequired"),
+              },
               ({ getFieldValue }) => ({
                 validator(_, value) {
                   if (!value || getFieldValue("newPassword") === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject(new Error("Passwords do not match"));
+                  return Promise.reject(
+                    new Error(t("profilePage.passwordMismatch"))
+                  );
                 },
               }),
             ]}
           >
-            <Input.Password placeholder="Confirm new password" />
+            <Input.Password
+              placeholder={t("profilePage.confirmYourNewPassword")}
+            />
           </Form.Item>
           <Form.Item>
             <Button type="primary" htmlType="submit" block>
-              Update Password
+              {t("profilePage.changePassword")}
             </Button>
           </Form.Item>
         </Form>

@@ -10,12 +10,14 @@ import {
   Tag,
   Tooltip,
 } from "antd";
-import { getHistory } from "../../api/userService";
+import { getHistory } from "../../../api/userService";
 import { ClockCircleOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
 const History: React.FC = () => {
+  const { t } = useTranslation();
   const [historyData, setHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +32,7 @@ const History: React.FC = () => {
         )
       );
     } else {
-      message.warning("No history data found.");
+      message.warning(t("historyPage.noData"));
     }
     setLoading(false);
   };
@@ -41,7 +43,7 @@ const History: React.FC = () => {
 
   const columns = [
     {
-      title: "Scan",
+      title: t("historyPage.scan"),
       dataIndex: "filename",
       key: "image",
       align: "center" as const,
@@ -49,15 +51,15 @@ const History: React.FC = () => {
         <Image
           width={75}
           src={`http://localhost:5000/api/images/${filename}`}
-          alt="Scan"
+          alt={t("historyPage.scan")}
           style={{ borderRadius: 10, objectFit: "cover" }}
-          preview={{ mask: "Click to Zoom" }}
+          preview={{ mask: t("historyPage.zoomImage") }}
           fallback="https://via.placeholder.com/100?text=No+Image"
         />
       ),
     },
     {
-      title: "Prediction",
+      title: t("historyPage.prediction"),
       dataIndex: "prediction",
       key: "prediction",
       align: "center" as const,
@@ -81,23 +83,36 @@ const History: React.FC = () => {
       ),
     },
     {
-      title: "Confidence",
+      title: t("historyPage.confidence"),
       dataIndex: "confidence",
       key: "confidence",
       align: "center" as const,
       render: (value: string) => (
         <Tooltip title={value}>
-          <Tag color={parseFloat(value.replace("%", "")) > 50 ? "green": "red"}>{value}</Tag>
+          <Tag
+            color={parseFloat(value.replace("%", "")) > 50 ? "green" : "red"}
+          >
+            {value}
+          </Tag>
         </Tooltip>
       ),
     },
     {
-      title: "Date",
+      title: t("historyPage.date"),
       dataIndex: "timestamp",
       key: "timestamp",
       align: "center" as const,
       render: (value: string) => (
-        <span style={{ color: "#666", fontSize: "0.9rem" }}>
+        <span
+          style={{
+            color: "#666",
+            fontSize: "0.9rem",
+            display: "flex",
+            gap: 8,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <ClockCircleOutlined style={{ marginRight: 6 }} />
           {new Date(value).toLocaleString()}
         </span>
@@ -119,7 +134,7 @@ const History: React.FC = () => {
       }}
     >
       <Title level={2} style={{ textAlign: "center", marginBottom: 30 }}>
-        Prediction History
+        {t("historyPage.title")}
       </Title>
 
       {loading ? (
@@ -134,7 +149,7 @@ const History: React.FC = () => {
         />
       ) : (
         <Empty
-          description="No history records found"
+          description={t("historyPage.noData")}
           style={{ padding: "4rem 0" }}
         />
       )}

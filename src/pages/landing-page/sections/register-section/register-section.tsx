@@ -1,4 +1,4 @@
-import { SetStateAction } from "react";
+import { SetStateAction, useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { register } from "../../../../api/authService";
@@ -11,6 +11,7 @@ const { Title } = Typography;
 
 const RegisterSection = ({navigateToLogin}: IRegisterSectionProps) => {
   const { t } = useTranslation();
+  const [ isLoading, setIsLoading ] = useState(false)
    
   const onFinish = async (values: {
     name: string;
@@ -18,7 +19,9 @@ const RegisterSection = ({navigateToLogin}: IRegisterSectionProps) => {
     password: string;
     confirmPassword: string;
   }) => {
+    setIsLoading(true)
     await register(values);
+   setIsLoading(false)
     navigateToLogin("login"); // Navigate to the login page after successful registration
   };
 
@@ -100,7 +103,7 @@ const RegisterSection = ({navigateToLogin}: IRegisterSectionProps) => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" block htmlType="submit">
+          <Button type="primary" block htmlType="submit" loading={isLoading}>
             {t("RegisterSection.register")}
           </Button>
         </Form.Item>
