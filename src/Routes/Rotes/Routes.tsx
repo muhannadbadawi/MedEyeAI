@@ -9,6 +9,7 @@ import AdminHome from "../../pages/admin/home/admin-home";
 import Profile from "../../pages/profile/profile";
 import UserManagement from "../../pages/admin/users/users-management";
 import NotFoundPage from "../../pages/not-found/not-found";
+import UserDetails from "../../pages/admin/users/user-details/user-details";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
       { path: "home", element: <AdminHome /> },
       { path: "users", element: <UserManagement /> },
       { path: "profile", element: <Profile /> },
+      { path: "user-details/:userId", element: <UserDetails /> }
     ],
   },
   {

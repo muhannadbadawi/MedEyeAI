@@ -1,19 +1,26 @@
 import React from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
+import { sendEmailToAdmin } from "../../../../api/userService";
 
 const { Title } = Typography;
 
 const ContactSection = () => {
   const { t } = useTranslation();
 
-  const onFinish = (values: {
+  const onFinish = async (values: {
     name: string;
     email: string;
     message: string;
   }) => {
     console.log("Form values:", values);
-    // Add logic to handle form submission, such as sending the data to the backend.
+    try {
+      await sendEmailToAdmin(values);
+      // Optionally show a success message
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      // Optionally show an error message
+    }
   };
 
   const labelStyle = { color: "#fff" };

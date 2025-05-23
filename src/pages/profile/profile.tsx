@@ -24,7 +24,7 @@ import {
 import {
   changePassword,
   editProfile,
-  getCurrentUser,
+  getUserById,
 } from "../../api/userService";
 import { useTranslation } from "react-i18next";
 
@@ -62,7 +62,7 @@ const Profile = () => {
         picture: imageFile,
       });
 
-      const updatedUser = await getCurrentUser();
+      const updatedUser = await getUserById();
       console.log("updatedUser: ", updatedUser);
 
       // ⬇️ Update localStorage

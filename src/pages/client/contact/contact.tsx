@@ -1,14 +1,26 @@
 import { useTranslation } from "react-i18next";
 import { Form, Input, Button, Card, Typography } from "antd";
+import { sendEmailToAdmin } from "../../../api/userService";
 
 const { Title, Paragraph } = Typography;
 
 const Contact = () => {
   const { t } = useTranslation();
 
-  const onFinish = (values: any) => {
-    console.log("Submitted:", values);
-    // You can replace this with actual API submission logic
+  const onFinish = async (values: {
+    message: string;
+  }) => {
+    console.log("Form values:", values);
+    try {
+      const user = localStorage.getItem("user");
+      const userData = user ? JSON.parse(user) : null;
+
+      await sendEmailToAdmin({...values, email:userData.email , name: userData.name});
+      // Optionally show a success message
+    } catch (error) {
+      console.error("Failed to send email:", error);
+      // Optionally show an error message
+    }
   };
 
   return (
@@ -19,30 +31,11 @@ const Contact = () => {
 
         <Form layout="vertical" onFinish={onFinish}>
           <Form.Item
-            label={t("contact.name", "Name")}
-            name="name"
-            rules={[{ required: true, message: t("contact.nameRequired", "Please enter your name") }]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
-            label={t("contact.email", "Email")}
-            name="email"
-            rules={[
-              { required: true, message: t("contact.emailRequired", "Please enter your email") },
-              { type: "email", message: t("contact.emailInvalid", "Please enter a valid email") },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-
-          <Form.Item
             label={t("contact.message", "Message")}
             name="message"
             rules={[{ required: true, message: t("contact.messageRequired", "Please enter your message") }]}
           >
-            <Input.TextArea rows={4} />
+            <Input.TextArea rows={8} />
           </Form.Item>
 
           <Form.Item>

@@ -116,10 +116,11 @@ export const editProfile = async (editProfileData: {
   return { data: response.data, status: response.status };
 };
 
-export const getCurrentUser = async () => {
+export const getUserById = async (userId?: string) => {
   const response = await api.get(`/getUserById`, {
-    params: { id: userData.id },
+    params: { id: userId?? userData.id },
   });
+    console.log("response: ", response);
 
   return response.data as {
     id: string;
@@ -138,3 +139,24 @@ export const changePassword = async (data: {
   const response = await api.post("/changePassword", {...data, email:userData.email});
   return response;
 };
+
+export const sendEmailToAdmin = async (data: {
+  name: string;
+  email: string;
+  message: string;
+}) => {
+  try {
+    const response = await api.post("/contact", data);
+    if (response.status === 200) {
+      message.success("Message sent successfully.");
+    } else {
+      message.error("Failed to send message.");
+    }
+    return response;
+  } catch (error) {
+    console.error("Error sending message to admin:", error);
+    message.error("There was an error sending the message.");
+    return null;
+  }
+};
+
