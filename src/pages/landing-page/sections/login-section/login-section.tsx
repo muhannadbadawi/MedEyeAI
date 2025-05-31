@@ -82,7 +82,7 @@ const LoginSection = () => {
   const labelStyle = { color: "#fff" };
 
   return (
-    <div style={{ maxWidth: 400, margin: "0 auto", padding: "20px" }}>
+    <div style={{ width: "500px", margin: "0 auto", padding: "20px" }}>
       <Title level={2} style={{ textAlign: "center", color: "#fff" }}>
         {t("LoginSection.login", "Login")}
       </Title>

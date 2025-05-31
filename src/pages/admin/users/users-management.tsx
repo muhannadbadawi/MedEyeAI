@@ -13,7 +13,6 @@ import {
 import {
   DeleteOutlined,
   EyeOutlined,
-  ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { deleteClient, getClients } from "../../../api/adminService";
 import { useNavigate } from "react-router-dom";
@@ -21,16 +20,13 @@ import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
 
 const { Text } = Typography;
-const { confirm } = Modal;
 
 const UserManagement = () => {
   const [clients, setClients] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
-
   const { t } = useTranslation();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -116,7 +112,6 @@ const UserManagement = () => {
         onOk={async () => {
           try {
             if (selectedUserId) {
-              // await deleteClient(selectedUserId); // real API call
               await deleteClient(selectedUserId)
               setClients((prev) => prev.filter((u) => u.id !== selectedUserId));
               toast.success("User deleted successfully");

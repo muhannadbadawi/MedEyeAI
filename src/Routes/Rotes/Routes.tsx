@@ -10,6 +10,7 @@ import Profile from "../../pages/profile/profile";
 import UserManagement from "../../pages/admin/users/users-management";
 import NotFoundPage from "../../pages/not-found/not-found";
 import UserDetails from "../../pages/admin/users/user-details/user-details";
+import RecommendationsManagement from "../../pages/admin/recommendations-management/recommendations-management";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +33,7 @@ export const router = createBrowserRouter([
     children: [
       { path: "home", element: <AdminHome /> },
       { path: "users", element: <UserManagement /> },
+      { path: "recommendations-management", element: <RecommendationsManagement /> },
       { path: "profile", element: <Profile /> },
       { path: "user-details/:userId", element: <UserDetails /> }
     ],

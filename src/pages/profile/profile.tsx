@@ -128,10 +128,14 @@ const Profile = () => {
       style={{
         width: "100%",
         maxWidth: 650,
-        boxShadow: "0 12px 30px rgba(0,0,0,0.06)",
-        borderRadius: 20,
-        background: "#fff",
         margin: "0.5rem auto",
+        borderRadius: 50,
+        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        textAlign: "center",
+        padding: 24,
+        background: "transparent",
+        backdropFilter: "blur(10px)",
+        border: "2px solid rgba(93, 143, 250, 0.6)",
       }}
     >
       <div style={{ textAlign: "center" }}>

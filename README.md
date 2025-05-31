@@ -57,26 +57,31 @@ med-eye-ai
 ├─ index.html
 ├─ package-lock.json
 ├─ package.json
-├─ public
-│  └─ vite.svg
 ├─ README.md
 ├─ src
 │  ├─ api
+│  │  ├─ adminService.ts
 │  │  ├─ authService.ts
 │  │  ├─ axios.ts
 │  │  └─ userService.ts
 │  ├─ App.css
 │  ├─ App.tsx
 │  ├─ assets
+│  │  ├─ bg1.jpg
 │  │  ├─ flags
 │  │  │  ├─ Jordan_flag_icon_round.svg
 │  │  │  └─ UK_flag_icon_round.svg
-│  │  ├─ img3.jpg
 │  │  ├─ logo.png
 │  │  ├─ macro-eye-iris.jpg
 │  │  ├─ new-logo.png
-│  │  └─ react.svg
-│  ├─ enum
+│  │  ├─ react.svg
+│  │  └─ team
+│  │     ├─ amer.jpeg
+│  │     ├─ hala.jpeg
+│  │     ├─ layan.jpeg
+│  │     └─ malek.jpeg
+│  ├─ enums
+│  │  └─ userRole.ts
 │  ├─ i18n
 │  │  ├─ ar.json
 │  │  ├─ en.json
@@ -84,19 +89,40 @@ med-eye-ai
 │  ├─ index.css
 │  ├─ main.tsx
 │  ├─ pages
-│  │  ├─ home
-│  │  └─ landing-page
-│  │     ├─ landing-page.tsx
-│  │     └─ sections
-│  │        ├─ contact-section
-│  │        │  └─ contact-section.tsx
-│  │        ├─ login-section
-│  │        │  └─ login-section.tsx
-│  │        ├─ main-section
-│  │        │  └─ main-section.tsx
-│  │        └─ register-section
-│  │           └─ register-section.tsx
+│  │  ├─ admin
+│  │  │  ├─ home
+│  │  │  │  └─ admin-home.tsx
+│  │  │  ├─ recommendations-management
+│  │  │  │  └─ recommendations-management.tsx
+│  │  │  └─ users
+│  │  │     ├─ user-details
+│  │  │     │  └─ user-details.tsx
+│  │  │     └─ users-management.tsx
+│  │  ├─ client
+│  │  │  ├─ contact
+│  │  │  │  └─ contact.tsx
+│  │  │  ├─ history
+│  │  │  │  └─ history.tsx
+│  │  │  └─ home
+│  │  │     └─ home.tsx
+│  │  ├─ landing-page
+│  │  │  ├─ landing-page.tsx
+│  │  │  └─ sections
+│  │  │     ├─ contact-section
+│  │  │     │  └─ contact-section.tsx
+│  │  │     ├─ login-section
+│  │  │     │  └─ login-section.tsx
+│  │  │     ├─ main-section
+│  │  │     │  └─ main-section.tsx
+│  │  │     └─ register-section
+│  │  │        └─ register-section.tsx
+│  │  ├─ not-found
+│  │  │  └─ not-found.tsx
+│  │  └─ profile
+│  │     └─ profile.tsx
 │  ├─ Routes
+│  │  ├─ layout
+│  │  │  └─ logedin-layout.tsx
 │  │  └─ Rotes
 │  │     └─ Routes.tsx
 │  └─ vite-env.d.ts

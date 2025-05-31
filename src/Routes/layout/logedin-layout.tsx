@@ -6,6 +6,7 @@ import { changeLanguage } from "../../i18n/i18n";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../../enums/userRole";
+import wallpaper from "../../assets/macro-eye-iris.jpg";
 
 const { Header, Content } = Layout;
 
@@ -136,6 +137,13 @@ const LogedinLayout = ({ role }: { role: UserRole }) => {
               >
                 {t("LogedinLayout.users", "Users")}
               </Button>
+                            <Button
+                type="link"
+                style={{ color: "#fff" }}
+                onClick={() => navigate("recommendations-management")}
+              >
+                {t("LogedinLayout.recommendationsManagement", "Recommendations Management")}
+              </Button>
               <Button
                 type="link"
                 style={{ color: "#fff" }}
@@ -175,7 +183,17 @@ const LogedinLayout = ({ role }: { role: UserRole }) => {
       </Header>
 
       {/* Content */}
-      <Content style={{ paddingTop: "10vh" }}>
+      <Content
+        style={{
+          paddingTop: "10vh",
+          background: `linear-gradient(135deg, #0F0C29, #1E5E98)`,
+          backgroundSize: "cover",
+          display: "flex",
+          justifyContent: "right",
+          alignItems: "center",
+          padding: "1rem",
+        }}
+      >
         <Outlet />
       </Content>
     </Layout>

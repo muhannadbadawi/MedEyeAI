@@ -1,6 +1,4 @@
 import api from "./axios"; // your axios instance for making API calls
-const user = localStorage.getItem("user");
-const userData = user ? JSON.parse(user) : null;
 // Define the uploadImage function
 
 export const dashboardStats = async () => {
@@ -28,3 +26,27 @@ export const deleteClient = async (userId: string) => {
     throw error;
   }
 };
+
+export const editRecommendations = async (recommendations: {
+  glaucoma: string;
+  diabeticRetinopathy: string;
+  cataracts: string;
+  normal: string;
+}) => {
+  try {
+    const response = await api.put(`/editRecommendations`, recommendations);
+    return response.data;
+  } catch (error) {
+    console.error("Error editing recommendations:", error);
+    throw error;
+  }
+};
+export const getRecommendations = async () => {
+  try {
+    const response = await api.get(`/getRecommendations`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching recommendations:", error);
+    throw error;
+  }
+}

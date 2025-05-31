@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { Button, Upload, Card, Typography, Space, Image, Divider } from "antd";
-import { UploadOutlined, DeleteOutlined, CameraOutlined } from "@ant-design/icons";
+import {
+  UploadOutlined,
+  DeleteOutlined,
+  CameraOutlined,
+} from "@ant-design/icons";
 import { uploadImage } from "../../../api/userService";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
@@ -116,14 +120,15 @@ const Home: React.FC = () => {
         style={{
           width: "100%",
           maxWidth: 460,
-          borderRadius: 16,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+          borderRadius: 50,
+          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
           textAlign: "center",
           padding: 24,
-          background: "#ffffff",
+          background: `linear-gradient(120deg, rgba(35, 16, 209, 0.05),rgb(10, 137, 241))`,
+          backdropFilter: "blur(10px)",
           margin: "0.5rem auto",
+          border: "3px solid rgba(93, 143, 250, 0.6)",
         }}
-        bordered={false}
       >
         <Title level={3}>{t("MainScreen.title")}</Title>
         <Text type="secondary">{t("MainScreen.description2")}</Text>
@@ -149,7 +154,15 @@ const Home: React.FC = () => {
               >
                 {imageFile ? imageFile.name : t("upload.noFileSelected")}
               </Text>
-              <Button block icon={<UploadOutlined />} loading={loading}>
+              <Button
+                block
+                icon={<UploadOutlined />}
+                loading={loading}
+                style={{
+                  background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`,
+                  color: "#fff",
+                }}
+              >
                 {t("upload.uploadImage")}
               </Button>
             </Upload>
@@ -159,6 +172,10 @@ const Home: React.FC = () => {
               loading={loading}
               disabled={showCamera}
               icon={<CameraOutlined />}
+              style={{
+                background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`,
+                color: "#fff",
+              }}
             >
               {t("upload.takePhoto")}
             </Button>
@@ -169,6 +186,7 @@ const Home: React.FC = () => {
               onClick={handleSend}
               disabled={!imageFile}
               loading={loading}
+              style={{background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`, color: "#fff"}}
             >
               {t("upload.sendForPrediction")}
             </Button>
@@ -181,6 +199,7 @@ const Home: React.FC = () => {
               onClick={handleClear}
               disabled={!imageFile}
               loading={loading}
+              style={{background: imageFile?`linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`:undefined, color: "red"}}
             >
               {t("upload.clear")}
             </Button>

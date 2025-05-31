@@ -1,94 +1,94 @@
-import api from "./axios"; // your axios instance for making API calls
-import { message } from "antd";
-const user = localStorage.getItem("user");
-const userData = user ? JSON.parse(user) : null;
-// Define the uploadImage function
+import toast from "react-hot-toast";
+import api from "./axios";
+
+const getStoredUser = () => {
+  const user = localStorage.getItem("user");
+  return user ? JSON.parse(user) : null;
+};
+
+const userData = getStoredUser();
+
+/**
+ * Upload an image for analysis
+ */
 export const uploadImage = async (imageFile: File) => {
   try {
-    const user = localStorage.getItem("user");
+    const user = getStoredUser();
     if (!user) {
-      message.error("User not found. Please log in.");
+      toast.error("User not found. Please log in.");
       return null;
     }
-    const userId = JSON.parse(user).id; // Extract userId from localStorage
-    // Create a FormData object to append the image
+
     const formData = new FormData();
     formData.append("image", imageFile);
-    formData.append("userId", userId); // Optional: append filename
+    formData.append("userId", user.id);
 
-    // Send the image to the Flask API
     const response = await api.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data", // Specify form data header
-      },
+      headers: { "Content-Type": "multipart/form-data" },
     });
 
-    // Handle the response from the server
-    if (response.data) {
-      message.success("Image uploaded and analyzed successfully!");
-      return response.data; // Return the response containing prediction details
-    } else {
-      message.error("Image upload failed.");
-      return null;
-    }
+    toast.success("Image uploaded and analyzed successfully!");
+    return response.data;
   } catch (error) {
     console.error("Error uploading image:", error);
-    message.error("There was an error uploading the image.");
+    toast.error("There was an error uploading the image.");
     return null;
   }
 };
 
+/**
+ * Get prediction history of the logged-in user
+ */
 export const getHistory = async () => {
   try {
-    const user = localStorage.getItem("user");
+    const user = getStoredUser();
     if (!user) {
-      message.error("User not found. Please log in.");
+      toast.error("User not found. Please log in.");
       return null;
     }
-    const email = JSON.parse(user).email; // Extract email from localStorage
 
-    // Send a request to the Flask API to get the history
-    const response = await api.get(`/getHistory`, {
-      params: { email },
+    const response = await api.get("/getHistory", {
+      params: { email: user.email },
     });
 
-    // Handle the response from the server
-    if (response.data) {
-      return response.data; // Return the history data
-    } else {
-      message.error("Failed to fetch history.");
-      return null;
-    }
+    return response.data;
   } catch (error) {
     console.error("Error fetching history:", error);
-    message.error("There was an error fetching the history.");
+    toast.error("There was an error fetching the history.");
     return null;
   }
 };
 
+/**
+ * Send OTP to user's email
+ */
 export const sendOtp = async (email: string) => {
   try {
-    const response = await api.post("/sendOtp", { email });
-    return response;
+    return await api.post("/sendOtp", { email });
   } catch (error) {
     console.error("Error sending OTP:", error);
-    message.error("There was an error sending the OTP.");
+    toast.error("There was an error sending the OTP.");
     return null;
   }
 };
 
+/**
+ * Reset password
+ */
 export const resetPassword = async (email: string, newPassword: string) => {
   try {
-    const response = await api.post("/forgetPassword", { email, newPassword });
-    return response;
+    return await api.post("/forgetPassword", { email, newPassword });
   } catch (error) {
-    console.error("Error verifying OTP:", error);
-    message.error("There was an error verifying the OTP.");
+    console.error("Error resetting password:", error);
+    toast.error("There was an error resetting the password.");
     return null;
   }
 };
 
-export const editProfile = async (editProfileData: {
+/**
+ * Edit user profile
+ */
+export const editProfile = async (data: {
   email: string;
   name: string;
   age: number;
@@ -96,31 +96,26 @@ export const editProfile = async (editProfileData: {
   picture: File | null;
 }) => {
   const formData = new FormData();
-  formData.append("email", editProfileData.email);
-  formData.append("name", editProfileData.name);
-  formData.append("age", String(editProfileData.age));
-  formData.append("gender", editProfileData.gender);
-
-  if (editProfileData.picture) {
-    formData.append("picture", editProfileData.picture);
-  }
-
-  // ✅ Add the removePicture flag explicitly
+  formData.append("email", data.email);
+  formData.append("name", data.name);
+  formData.append("age", String(data.age));
+  formData.append("gender", data.gender);
+  if (data.picture) formData.append("picture", data.picture);
 
   const response = await api.put("/editProfile", formData, {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
+    headers: { "Content-Type": "multipart/form-data" },
   });
 
   return { data: response.data, status: response.status };
 };
 
+/**
+ * Get user data by ID
+ */
 export const getUserById = async (userId?: string) => {
-  const response = await api.get(`/getUserById`, {
-    params: { id: userId?? userData.id },
+  const response = await api.get("/getUserById", {
+    params: { id: userId ?? userData?.id },
   });
-    console.log("response: ", response);
 
   return response.data as {
     id: string;
@@ -132,14 +127,22 @@ export const getUserById = async (userId?: string) => {
   };
 };
 
+/**
+ * Change password
+ */
 export const changePassword = async (data: {
   currentPassword: string;
   newPassword: string;
 }) => {
-  const response = await api.post("/changePassword", {...data, email:userData.email});
-  return response;
+  return await api.post("/changePassword", {
+    ...data,
+    email: userData?.email,
+  });
 };
 
+/**
+ * Contact admin
+ */
 export const sendEmailToAdmin = async (data: {
   name: string;
   email: string;
@@ -148,15 +151,14 @@ export const sendEmailToAdmin = async (data: {
   try {
     const response = await api.post("/contact", data);
     if (response.status === 200) {
-      message.success("Message sent successfully.");
+      toast.success("Message sent successfully.");
     } else {
-      message.error("Failed to send message.");
+      toast.error("Failed to send message.");
     }
     return response;
   } catch (error) {
     console.error("Error sending message to admin:", error);
-    message.error("There was an error sending the message.");
+    toast.error("There was an error sending the message.");
     return null;
   }
 };
-

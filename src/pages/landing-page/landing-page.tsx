@@ -106,8 +106,6 @@ const LandingPage = () => {
                 ? "linear-gradient(to left,#001529, rgb(19, 54, 87))"
                 : "linear-gradient(to left,rgb(19, 54, 87),  #001529)",
             borderRadius: "10px",
-            width: "425px",
-            maxWidth: "90%",
             boxShadow: "0 4px 12px rgba(255, 255, 255, 0.15)",
             maxHeight: "80vh",
             color: "#fff",
