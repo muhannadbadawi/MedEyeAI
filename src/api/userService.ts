@@ -11,7 +11,9 @@ const userData = getStoredUser();
 /**
  * Upload an image for analysis
  */
-export const uploadImage = async (imageFile: File) => {
+export const uploadImage = async (
+  imageFile: File
+): Promise<{ prediction: string; confidence: number; recommendation: string } | null> => {
   try {
     const user = getStoredUser();
     if (!user) {
@@ -23,7 +25,7 @@ export const uploadImage = async (imageFile: File) => {
     formData.append("image", imageFile);
     formData.append("userId", user.id);
 
-    const response = await api.post("/upload", formData, {
+    const response = await api.post<{ prediction: string; confidence: number; recommendation: string }>("/upload", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 

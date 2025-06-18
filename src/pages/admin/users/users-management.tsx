@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import {
-  Card,
   List,
   Avatar,
   Typography,
@@ -8,18 +7,16 @@ import {
   Empty,
   Button,
   Modal,
-  message,
+  Divider,
 } from "antd";
-import {
-  DeleteOutlined,
-  EyeOutlined,
-} from "@ant-design/icons";
+import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import { deleteClient, getClients } from "../../../api/adminService";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import toast from "react-hot-toast";
+import MyCard from "../../../shared/my-card";
 
-const { Text } = Typography;
+const { Title, Text } = Typography;
 
 const UserManagement = () => {
   const [clients, setClients] = useState<any[]>([]);
@@ -54,20 +51,15 @@ const UserManagement = () => {
   };
 
   return (
-    <Card
-      title="User Management"
-      style={{
-        width: "100%",
-        maxWidth: 460,
-        borderRadius: 16,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        textAlign: "center",
-        padding: 24,
-        background: "#ffffff",
-        margin: "0.5rem auto",
+    <MyCard
+      styles={{
+        maxWidth: 800,
       }}
-      bordered={false}
     >
+      <Title level={3} style={{ color: "#fff" }}>
+        {t("userManagement.title")}
+      </Title>
+      <Divider/>
       {loading ? (
         <Spin tip="Loading users..." />
       ) : clients.length === 0 ? (
@@ -98,8 +90,8 @@ const UserManagement = () => {
                     {client.name[0]}
                   </Avatar>
                 }
-                title={<Text strong>{client.name}</Text>}
-                description={<Text type="secondary">{client.email}</Text>}
+                title={<Text strong style={{ color: "#fff" }}>{client.name}</Text>}
+                description={<Text type="secondary" style={{ color: "#fff" }}>{client.email}</Text>}
               />
             </List.Item>
           )}
@@ -112,12 +104,12 @@ const UserManagement = () => {
         onOk={async () => {
           try {
             if (selectedUserId) {
-              await deleteClient(selectedUserId)
+              await deleteClient(selectedUserId);
               setClients((prev) => prev.filter((u) => u.id !== selectedUserId));
               toast.success("User deleted successfully");
             }
           } catch {
-            message.error("Failed to delete user");
+            toast.error("Failed to delete user");
           } finally {
             setIsModalVisible(false);
           }
@@ -128,7 +120,7 @@ const UserManagement = () => {
       >
         <p>Are you sure you want to delete this user?</p>
       </Modal>
-    </Card>
+    </MyCard>
   );
 };
 

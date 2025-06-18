@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Upload, Card, Typography, Space, Image, Divider } from "antd";
+import { Button, Upload, Typography, Space, Image, Divider } from "antd";
 import {
   UploadOutlined,
   DeleteOutlined,
@@ -8,7 +8,9 @@ import {
 import { uploadImage } from "../../../api/userService";
 import toast from "react-hot-toast";
 import { useTranslation } from "react-i18next";
-
+import MyCard from "../../../shared/my-card";
+import type { UploadChangeParam } from "antd/es/upload";
+import type { UploadFile } from "antd/es/upload/interface";
 const { Title, Text } = Typography;
 
 const Home: React.FC = () => {
@@ -20,12 +22,13 @@ const Home: React.FC = () => {
   const [predictionResult, setPredictionResult] = useState<{
     prediction: string;
     confidence: number;
+    recommendation: string;
   } | null>(null);
   const [showCamera, setShowCamera] = useState(false);
   const videoRef = React.useRef<HTMLVideoElement | null>(null);
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
-  const handleUploadChange = (info: any) => {
+  const handleUploadChange = (info: UploadChangeParam<UploadFile>) => {
     if (info.file.status === "done") {
       toast.success(`${info.file.name} ${t("toast.uploadSuccess")}`);
     } else if (info.file.status === "error") {
@@ -40,7 +43,7 @@ const Home: React.FC = () => {
         videoRef.current.srcObject = stream;
         videoRef.current.play();
       }
-    } catch (error) {
+    } catch {
       toast.error(t("toast.cameraAccessDenied"));
     }
   };
@@ -88,6 +91,7 @@ const Home: React.FC = () => {
         setPredictionResult({
           prediction: result.prediction,
           confidence: result.confidence,
+          recommendation: result.recommendation,
         });
       } else {
         toast.error(t("toast.imageUploadFailed"));
@@ -116,22 +120,17 @@ const Home: React.FC = () => {
         maxWidth: 900,
       }}
     >
-      <Card
-        style={{
-          width: "100%",
+      <MyCard
+        styles={{
           maxWidth: 460,
-          borderRadius: 50,
-          boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
-          textAlign: "center",
-          padding: 24,
-          background: `linear-gradient(120deg, rgba(35, 16, 209, 0.05),rgb(10, 137, 241))`,
-          backdropFilter: "blur(10px)",
-          margin: "0.5rem auto",
-          border: "3px solid rgba(93, 143, 250, 0.6)",
         }}
       >
-        <Title level={3}>{t("MainScreen.title")}</Title>
-        <Text type="secondary">{t("MainScreen.description2")}</Text>
+        <Title level={3} style={{ color: "#ffffff" }}>
+          {t("MainScreen.title")}
+        </Title>
+        <Text type="secondary" style={{ color: "#ffffff" }}>
+          {t("MainScreen.description2")}
+        </Text>
         {!showCamera ? (
           <Space
             direction="vertical"
@@ -159,8 +158,9 @@ const Home: React.FC = () => {
                 icon={<UploadOutlined />}
                 loading={loading}
                 style={{
-                  background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`,
+                  background: `linear-gradient(135deg,rgba(19, 0, 71, 0.68), rgba(8, 87, 151, 0.1))`,
                   color: "#fff",
+                  border: "none",
                 }}
               >
                 {t("upload.uploadImage")}
@@ -173,20 +173,24 @@ const Home: React.FC = () => {
               disabled={showCamera}
               icon={<CameraOutlined />}
               style={{
-                background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`,
+                background: `linear-gradient(135deg,rgba(19, 0, 71, 0.68), rgba(8, 87, 151, 0.1))`,
                 color: "#fff",
+                border: "none",
               }}
             >
               {t("upload.takePhoto")}
             </Button>
             <Button
               type="primary"
-              size="large"
               block
               onClick={handleSend}
               disabled={!imageFile}
               loading={loading}
-              style={{background: `linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`, color: "#fff"}}
+              style={{
+                background: `linear-gradient(135deg,rgba(19, 0, 71, 0.68), rgba(8, 87, 151, 0.1))`,
+                color: "#fff",
+                border: "none",
+              }}
             >
               {t("upload.sendForPrediction")}
             </Button>
@@ -199,7 +203,12 @@ const Home: React.FC = () => {
               onClick={handleClear}
               disabled={!imageFile}
               loading={loading}
-              style={{background: imageFile?`linear-gradient(135deg,rgb(2, 19, 177), rgba(8, 87, 151, 0.1))`:undefined, color: "red"}}
+              style={{
+                background: `linear-gradient(135deg,rgba(19, 0, 71, 0.68), rgba(8, 87, 151, 0.1))`,
+                color: "red",
+                border: "none",
+                fontWeight: "bold",
+              }}
             >
               {t("upload.clear")}
             </Button>
@@ -222,71 +231,53 @@ const Home: React.FC = () => {
             </Space>
           </div>
         )}
-      </Card>
+      </MyCard>
 
       {predictionResult && (
-        <Card
-          style={{
-            width: "100%",
+        <MyCard
+          styles={{
             maxWidth: 460,
-            borderRadius: 16,
-            boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-            textAlign: "center",
-            padding: 24,
-            background: "#ffffff",
-            margin: "0.5rem auto",
           }}
-          bordered={false}
         >
           {imagePreview && (
-            <div
+            <Image
+              src={imagePreview}
+              alt="Uploaded preview"
+              width="70%"
               style={{
-                border: "1px solid #f0f0f0",
-                borderRadius: 8,
-                padding: 8,
-                background: "#fafafa",
+                borderRadius: 4,
+                objectFit: "contain",
+                maxHeight: 120,
               }}
-            >
-              <Image
-                src={imagePreview}
-                alt="Uploaded preview"
-                width="70%"
-                style={{
-                  borderRadius: 4,
-                  objectFit: "contain",
-                  maxHeight: 120,
-                }}
-              />
-            </div>
+            />
           )}
           <>
             <Divider />
-            <Card
+            <div
               style={{
-                backgroundColor: "#f6ffed",
-                borderColor: "#b7eb8f",
-                borderRadius: 12,
                 textAlign: "left",
               }}
-              size="small"
             >
               <Text strong style={{ fontSize: 16, color: "#389e0d" }}>
                 {t("result.diagnosis")}
               </Text>
-              <div style={{ marginTop: 8 }}>
-                <Text>
-                  <strong>{t("result.prediction")}:</strong>{" "}
+              <div style={{ display:"flex", flexDirection:"column", marginTop: 8, gap: 4 }}>
+                <Text style={{ color: "#fff" }}>
+                  <strong>{t("result.prediction")}: </strong>
                   {predictionResult.prediction}
                 </Text>
-                <br />
-                <Text>
-                  <strong>{t("result.confidence")}:</strong>{" "}
+                <Text style={{ color: "#fff" }}>
+                  <strong>{t("result.confidence")}: </strong>
                   {predictionResult.confidence}
                 </Text>
+                <Text style={{ color: "#fff" }}>
+                  <strong>{t("result.recommendation")}: </strong>
+                  {predictionResult.recommendation}
+                </Text>
               </div>
-            </Card>
+            </div>
           </>
-        </Card>
+        </MyCard>
       )}
     </div>
   );

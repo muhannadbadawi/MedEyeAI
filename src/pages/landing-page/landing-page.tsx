@@ -67,7 +67,7 @@ const LandingPage = () => {
             style={{ color: "#fff" }}
             onClick={() => setCurrentSection("register")}
           >
-            {t("LangingPage.register", "Register")}
+            {t("LangingPage.signup", "Register")}
           </Button>
           <Button
             type="link"

@@ -1,7 +1,7 @@
 {
   "LangingPage": {
     "login": "Login",
-    "register": "Register",
+    "signup": "Sign Up",
     "contact": "Contact"
   },
   "MainScreen": {
@@ -57,7 +57,12 @@
     "profile": "Profile",
     "home": "Home",
     "contact": "Contact",
-    "history": "Previous Analyses"
+    "history": "Previous Analyses",
+    "recommendationsManagement": "Recommendations Management",
+    "users": "Users"
+  },
+  "RecommendationsManagement": {
+    "title": "Manage Medical Recommendations"
   },
   "profilePage": {
     "title": "Profile",
@@ -90,6 +95,9 @@
     "passwordMismatch": "Passwords do not match",
     "passwordUpdated": "Password updated successfully!"
   },
+  "userManagement": {
+    "title": "User Management"
+  },
   "historyPage": {
     "title": "Prediction History",
     "noData": "No history records found",
@@ -97,7 +105,8 @@
     "prediction": "Prediction",
     "confidence": "Confidence",
     "date": "Date",
-    "zoomImage": "Click to Zoom"
+    "zoomImage": "Click to Zoom",
+    "back": "Back"
   },
   "contact": {
     "title": "Contact Us",
@@ -123,7 +132,8 @@
   "result": {
     "diagnosis": "Diagnosis Result",
     "prediction": "Prediction",
-    "confidence": "Confidence"
+    "confidence": "Confidence",
+    "recommendation": "Recommendation"
   },
   "toast": {
     "uploadSuccess": "uploaded successfully",

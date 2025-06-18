@@ -27,6 +27,8 @@ import {
   getUserById,
 } from "../../api/userService";
 import { useTranslation } from "react-i18next";
+import MyCard from "../../shared/my-card";
+import toast from "react-hot-toast";
 
 const { Title, Text } = Typography;
 
@@ -84,9 +86,9 @@ const Profile = () => {
       }
       console.log("updatedUser: ", updatedUser);
 
-      message.success("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
     } catch {
-      message.error("Failed to update profile.");
+      toast.error("Failed to update profile.");
     } finally {
       setIsLoading(false);
     }
@@ -103,7 +105,7 @@ const Profile = () => {
   const beforeUpload = (file: File) => {
     const isImage = file.type.startsWith("image/");
     if (!isImage) {
-      message.error("You can only upload image files!");
+      toast.error("You can only upload image files!");
       return false;
     }
     setImageFile(file);
@@ -120,27 +122,21 @@ const Profile = () => {
     setImageURL(null);
     setAvatarUrl(null);
     setImageFile(null);
-    message.info("Profile picture removed. Don’t forget to save changes.");
   };
 
   return (
-    <Card
-      style={{
-        width: "100%",
-        maxWidth: 650,
-        margin: "0.5rem auto",
-        borderRadius: 50,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        textAlign: "center",
-        padding: 24,
-        background: "transparent",
-        backdropFilter: "blur(10px)",
-        border: "2px solid rgba(93, 143, 250, 0.6)",
+    <MyCard
+      styles={{
+        maxWidth: 800,
       }}
     >
       <div style={{ textAlign: "center" }}>
-        <Title level={2}>{t("profilePage.title")}</Title>
-        <Text type="secondary">{t("profilePage.subTitle")}</Text>
+        <Title style={{ color: "#fff" }} level={2}>
+          {t("profilePage.title")}
+        </Title>
+        <Text style={{ color: "#fff" }} type="secondary">
+          {t("profilePage.subTitle")}
+        </Text>
         <Divider />
       </div>
 
@@ -286,7 +282,11 @@ const Profile = () => {
       >
         <Form layout="vertical" onFinish={handlePasswordChange}>
           <Form.Item
-            label={t("profilePage.currentPassword")}
+            label={
+              <label className="blackLabel">
+                {t("profilePage.currentPassword")}
+              </label>
+            }
             name="currentPassword"
             rules={[
               {
@@ -300,7 +300,8 @@ const Profile = () => {
             />
           </Form.Item>
           <Form.Item
-            label={t("profilePage.newPassword")}
+
+            label={<label className="blackLabel">{t("profilePage.newPassword")}</label>}
             name="newPassword"
             rules={[
               { required: true, message: t("profilePage.newPasswordRequired") },
@@ -309,7 +310,7 @@ const Profile = () => {
             <Input.Password placeholder={t("profilePage.enterNewPassword")} />
           </Form.Item>
           <Form.Item
-            label={t("profilePage.confirmNewPassword")}
+            label={<label className="blackLabel">{t("profilePage.confirmNewPassword")}</label>}
             name="confirmPassword"
             dependencies={["newPassword"]}
             rules={[
@@ -340,7 +341,7 @@ const Profile = () => {
           </Form.Item>
         </Form>
       </Modal>
-    </Card>
+    </MyCard>
   );
 };
 

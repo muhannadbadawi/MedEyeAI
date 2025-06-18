@@ -6,7 +6,6 @@ import { changeLanguage } from "../../i18n/i18n";
 import { Outlet } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { UserRole } from "../../enums/userRole";
-import wallpaper from "../../assets/macro-eye-iris.jpg";
 
 const { Header, Content } = Layout;
 

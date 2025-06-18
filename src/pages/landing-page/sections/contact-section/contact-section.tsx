@@ -1,7 +1,7 @@
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { sendEmailToAdmin } from "../../../../api/userService";
-import layan from "../../../../assets/team/layan.jpeg";
+import layan from "../../../../assets/team/layan4.jpeg";
 import hala from "../../../../assets/team/hala.jpeg";
 import amer from "../../../../assets/team/amer.jpeg";
 import malek from "../../../../assets/team/malek.jpeg";
@@ -19,10 +19,8 @@ const ContactSection = () => {
     console.log("Form values:", values);
     try {
       await sendEmailToAdmin(values);
-      // Optionally show a success message
     } catch (error) {
       console.error("Failed to send email:", error);
-      // Optionally show an error message
     }
   };
 
@@ -33,7 +31,7 @@ const ContactSection = () => {
       style={{
         display: "flex",
         flexDirection: "row",
-        width: "1300px",
+        width: "900px",
         margin: "0 auto",
         gap: "20px",
         padding: "20px",
@@ -150,7 +148,6 @@ const ContactSection = () => {
             gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
             gap: "30px",
             justifyItems: "center",
-            
           }}
         >
           {[
@@ -165,7 +162,6 @@ const ContactSection = () => {
                 display: "flex",
                 flexDirection: "column",
                 alignItems: "center",
-                backgroundColor: "#ffffff0d",
                 padding: "10px",
                 borderRadius: "12px",
                 width: "100%",
@@ -179,22 +175,12 @@ const ContactSection = () => {
                   width: 140,
                   height: 140,
                   borderRadius: "50%",
-                  objectFit: "fill",
+                  objectFit: "cover",
+                  objectPosition:
+                    member.name === "Hala" ? "center top" : "center",
                   marginBottom: 10,
                 }}
               />
-              <span
-                style={{
-                  color: "#fff",
-                  fontWeight: "bold",
-                  fontSize: "16px",
-                }}
-              >
-                {member.name}
-              </span>
-              <span style={{ color: "#ccc", fontSize: "14px" }}>
-                {member.discription}
-              </span>
             </div>
           ))}
         </div>

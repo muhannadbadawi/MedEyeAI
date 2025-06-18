@@ -1,35 +1,32 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { Form, Input, Button, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { register } from "../../../../api/authService";
-interface IRegisterSectionProps {
-  navigateToLogin: (
-    value: SetStateAction<"none" | "login" | "register" | "contact">
-  ) => void;
-}
+import { register, login } from "../../../../api/authService";
+import { useNavigate } from "react-router-dom";
 const { Title } = Typography;
 
-const RegisterSection = ({navigateToLogin}: IRegisterSectionProps) => {
+const RegisterSection = () => {
   const { t } = useTranslation();
-  const [ isLoading, setIsLoading ] = useState(false)
-   
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+
   const onFinish = async (values: {
     name: string;
     email: string;
     password: string;
     confirmPassword: string;
   }) => {
-    setIsLoading(true)
+    setIsLoading(true);
     await register(values);
-   setIsLoading(false)
-    navigateToLogin("login"); // Navigate to the login page after successful registration
+    await login(values.email, values.password, navigate);
+    setIsLoading(false);
   };
 
   const labelStyle = { color: "#fff" };
 
   return (
     <div
-      style={{ maxWidth: 400, margin: "0 auto", padding: "0 20px 20px 20px" }}
+      style={{ width: "500px", margin: "0 auto", padding: "0 20px 20px 20px" }}
     >
       <Title level={2} style={{ textAlign: "center", color: "#fff" }}>
         {t("RegisterSection.register")}

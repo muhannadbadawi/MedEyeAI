@@ -9,3 +9,23 @@ body {
   flex-direction: column;
   height: 100%;
 }
+
+label {
+  color: white !important;
+}
+
+.blackLabel {
+  color: black !important;
+}
+
+.myCard {
+  width: 100%;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  padding: 24px;
+  background: linear-gradient(120deg, rgba(108, 208, 255, 0.4), rgba(28, 46, 76, 0.4));
+  backdrop-filter: blur(10px);
+  margin: 0.5rem auto;
+  border: 3px solid rgba(93, 143, 250, 0.6);
+}

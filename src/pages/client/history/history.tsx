@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from "react";
-import {
-  Table,
-  Typography,
-  Spin,
-  message,
-  Image,
-  Card,
-  Empty,
-  Tag,
-  Tooltip,
-} from "antd";
+import { Table, Typography, Spin, Image, Empty, Tag, Tooltip } from "antd";
 import { getHistory } from "../../../api/userService";
 import { ClockCircleOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import MyCard from "../../../shared/my-card";
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
+
+type HistoryRecord = {
+  filename: string;
+  prediction: string;
+  confidence: string;
+  timestamp: string;
+};
 
 const History: React.FC = () => {
   const { t } = useTranslation();
-  const [historyData, setHistoryData] = useState([]);
+  const [historyData, setHistoryData] = useState<HistoryRecord[]>([]);
   const [loading, setLoading] = useState(true);
+
+  type GetHistoryResponse = {
+    history?: HistoryRecord[];
+    [key: string]: unknown;
+  };
 
   const fetchHistory = async () => {
     setLoading(true);
-    const data = await getHistory();
-    if (data?.history?.length) {
+    const data = (await getHistory()) as GetHistoryResponse;
+    if (data?.history?.length && data.history.length > 0) {
       setHistoryData(
         data.history.sort(
-          (a: any, b: any) =>
+          (a: HistoryRecord, b: HistoryRecord) =>
             new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
         )
       );
-    } else {
-      message.warning(t("historyPage.noData"));
     }
     setLoading(false);
   };
@@ -64,20 +65,7 @@ const History: React.FC = () => {
       key: "prediction",
       align: "center" as const,
       render: (text: string) => (
-        <Tag
-          color={
-            text === "Normal"
-              ? "green"
-              : text === "Cataract"
-              ? "volcano"
-              : text === "Glaucoma"
-              ? "geekblue"
-              : text === "Diabetic Retinopathy"
-              ? "purple"
-              : "default"
-          }
-          style={{ fontSize: "0.95rem", padding: "0.3rem 1rem" }}
-        >
+        <Tag style={{ fontSize: "0.95rem", padding: "0.3rem 1rem" }}>
           {text}
         </Tag>
       ),
@@ -95,6 +83,26 @@ const History: React.FC = () => {
             {value}
           </Tag>
         </Tooltip>
+      ),
+    },
+    {
+      title: t("historyPage.recommendation"),
+      dataIndex: "recommendation",
+      key: "recommendation",
+      align: "center" as const,
+      render: (text: string) => (
+        <Text
+          color={
+            text === "Consult an ophthalmologist"
+              ? "red"
+              : text === "Follow up in 6 months"
+              ? "orange"
+              : "green"
+          }
+          style={{ fontSize: "0.95rem", padding: "0.3rem 1rem" }}
+        >
+          {text}
+        </Text>
       ),
     },
     {
@@ -121,32 +129,26 @@ const History: React.FC = () => {
   ];
 
   return (
-    <Card
-      style={{
-          width: "100%",
-          maxWidth: 460,
-          borderRadius: 50,
-          boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-          textAlign: "center",
-          padding: 24,
-          background: "transparent",
-          backdropFilter: "blur(10px)",
-          margin: "0.5rem auto",
-          border: "2px solid rgba(93, 143, 250, 0.6)",
+    <MyCard
+      styles={{
+        maxWidth: 1200,
       }}
     >
-      <Title level={2} style={{ textAlign: "center", marginBottom: 30 }}>
+      <Title
+        level={2}
+        style={{ textAlign: "center", marginBottom: 30, color: "#ffffff" }}
+      >
         {t("historyPage.title")}
       </Title>
 
       {loading ? (
         <Spin size="large" style={{ display: "block", margin: "3rem auto" }} />
-      ) : historyData.length ? (
+      ) : historyData.length > 0 ? (
         <Table
           dataSource={historyData}
           columns={columns}
           rowKey={(record) => record.timestamp + record.filename}
-          pagination={{ pageSize: 5 }}
+          pagination={{ pageSize: 3 }}
           bordered
         />
       ) : (
@@ -155,7 +157,7 @@ const History: React.FC = () => {
           style={{ padding: "4rem 0" }}
         />
       )}
-    </Card>
+    </MyCard>
   );
 };
 

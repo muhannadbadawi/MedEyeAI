@@ -51,6 +51,7 @@ export default tseslint.config({
     ...reactDom.configs.recommended.rules,
   },
 })
+
 ```
 med-eye-ai
 ├─ eslint.config.js
@@ -78,7 +79,7 @@ med-eye-ai
 │  │  └─ team
 │  │     ├─ amer.jpeg
 │  │     ├─ hala.jpeg
-│  │     ├─ layan.jpeg
+│  │     ├─ layan4.jpeg
 │  │     └─ malek.jpeg
 │  ├─ enums
 │  │  └─ userRole.ts
@@ -125,6 +126,8 @@ med-eye-ai
 │  │  │  └─ logedin-layout.tsx
 │  │  └─ Rotes
 │  │     └─ Routes.tsx
+│  ├─ shared
+│  │  └─ my-card.tsx
 │  └─ vite-env.d.ts
 ├─ tsconfig.app.json
 ├─ tsconfig.json

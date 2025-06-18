@@ -1,7 +1,7 @@
 {
   "LangingPage": {
     "login": "تسجيل الدخول",
-    "register": "تسجيل",
+    "signup": "انشاء حساب",
     "contact": "اتصل بنا"
   },
   "MainScreen": {
@@ -57,7 +57,12 @@
     "profile": "الملف الشخصي",
     "home": "الرئيسية",
     "contact": "اتصل بنا",
-    "history": "سجل التحليلات السابقة"
+    "history": "سجل التحليلات السابقة",
+    "recommendationsManagement": "إدارة التوصيات",
+    "users": "المستخدمون"
+  },
+  "RecommendationsManagement": {
+    "title": "إدارة التوصيات الطبية"
   },
   "profilePage": {
     "title": "الملف الشخصي",
@@ -90,6 +95,9 @@
     "passwordMismatch": "كلمتا المرور غير متطابقتين",
     "passwordUpdated": "تم تحديث كلمة المرور بنجاح!"
   },
+  "userManagement": {
+    "title": "إدارة المستخدمين"
+  },
   "historyPage": {
     "title": "سجل التنبؤات",
     "noData": "لا توجد سجلات تاريخ",
@@ -97,7 +105,8 @@
     "prediction": "النتيجة",
     "confidence": "نسبة الدقة",
     "date": "التاريخ",
-    "zoomImage": "انقر للتكبير"
+    "zoomImage": "انقر للتكبير",
+    "back": "عودة"
   },
   "contact": {
     "title": "اتصل بنا",
@@ -123,7 +132,8 @@
   "result": {
     "diagnosis": "نتيجة التشخيص",
     "prediction": "التشخيص",
-    "confidence": "درجة الثقة"
+    "confidence": "درجة الثقة",
+    "recommendation": "التوصية"
   },
   "toast": {
     "uploadSuccess": "تم التحميل بنجاح",

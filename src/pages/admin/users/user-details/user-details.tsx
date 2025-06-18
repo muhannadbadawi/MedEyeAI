@@ -19,8 +19,11 @@ import {
   ClockCircleOutlined,
   ArrowLeftOutlined,
   UserOutlined,
+  ArrowRightOutlined,
 } from "@ant-design/icons";
 import { getUserById } from "../../../../api/userService";
+import MyCard from "../../../../shared/my-card";
+import i18n from "../../../../i18n/i18n";
 type HistoryRecord = {
   filename: string;
   prediction: string;
@@ -139,25 +142,26 @@ const UserDetails = () => {
   ];
 
   return (
-    <Card
-      style={{
-        width: "100%",
+    <MyCard
+      styles={{
         maxWidth: 1100,
-        boxShadow: "0 8px 20px rgba(0,0,0,0.08)",
-        borderRadius: 16,
-        background: "#fff",
-        margin: "0.5rem auto",
-        padding: "1.5rem",
-        minHeight: "80vh",
       }}
     >
       <Button
-        icon={<ArrowLeftOutlined />}
+        icon={
+          i18n.language === "en" ? (
+            <ArrowLeftOutlined />
+          ) : (
+            <ArrowRightOutlined />
+          )
+        }
         onClick={() => navigate(-1)}
-        style={{ marginBottom: 20 }}
-      >
-        {t("common.back")}
-      </Button>
+        style={{
+          display: "flex",
+          justifySelf: "flex-start",
+          marginBottom: 20,
+        }}
+      />
 
       <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
         <Avatar
@@ -169,11 +173,31 @@ const UserDetails = () => {
           }
           icon={!userInfo?.profile_picture && <UserOutlined />}
         />
-        <div>
-          <Title level={3} style={{ marginBottom: 0 }}>
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start", // vertically center children
+            alignItems: "flex-start", // horizontally center children
+            height: "100px",
+          }}
+        >
+          <Title
+            level={3}
+            style={{
+              display: "flex",
+              marginBottom: 0,
+              color: "#fff",
+            }}
+          >
             {userInfo?.name || t("historyPage.title")}
           </Title>
-          <Typography.Text type="secondary">{userInfo?.email}</Typography.Text>
+          <Typography.Text
+            style={{ display: "flex", color: "#fff" }}
+            type="secondary"
+          >
+            {userInfo?.email}
+          </Typography.Text>
         </div>
       </div>
 
@@ -181,13 +205,31 @@ const UserDetails = () => {
 
       <Descriptions column={2} size="small" style={{ marginBottom: 20 }}>
         {userInfo?.age && (
-          <Descriptions.Item label={t("common.age")}>
-            {userInfo?.age}
+          <Descriptions.Item
+            label={
+              <span style={{ color: "#fff" }}>{t("profilePage.age")}</span>
+            }
+          >
+            <Typography.Text
+              style={{ display: "flex", color: "#fff" }}
+              type="secondary"
+            >
+              {userInfo?.age}
+            </Typography.Text>
           </Descriptions.Item>
         )}
         {userInfo?.gender && (
-          <Descriptions.Item label={t("common.gender")}>
-            {userInfo?.gender}
+          <Descriptions.Item
+            label={
+              <span style={{ color: "#fff" }}>{t("profilePage.gender")}</span>
+            }
+          >
+            <Typography.Text
+              style={{ display: "flex", color: "#fff" }}
+              type="secondary"
+            >
+              {t(`profilePage.${userInfo?.gender.toLowerCase()}`)}
+            </Typography.Text>
           </Descriptions.Item>
         )}
       </Descriptions>
@@ -208,7 +250,7 @@ const UserDetails = () => {
           style={{ padding: "4rem 0" }}
         />
       )}
-    </Card>
+    </MyCard>
   );
 };
 

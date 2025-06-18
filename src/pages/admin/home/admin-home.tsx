@@ -1,8 +1,13 @@
-import { Card, Statistic, Row, Col } from "antd";
+import { Typography } from "antd";
 import { useEffect, useState } from "react";
 import { dashboardStats } from "../../../api/adminService";
+import MyCard from "../../../shared/my-card";
+import { useTranslation } from "react-i18next";
+const { Title, Paragraph } = Typography;
 
 const AdminHome = () => {
+  const { t } = useTranslation();
+
   const [dashboardStatsData, setDashboardStatsData] = useState({
     totalPredictions: 0,
     total_users: 0,
@@ -25,37 +30,42 @@ const AdminHome = () => {
   }, []);
 
   return (
-    <Card
-      style={{
-        width: "100%",
-        maxWidth: 460,
-        borderRadius: 16,
-        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        textAlign: "center",
-        padding: 24,
-        background: "#ffffff",
-        margin: "0.5rem auto",
-      }}
-      bordered={false}
-      title="Admin Dashboard"
-    >
-      <Row gutter={16} justify="center">
-        <Col span={12}>
-          <Statistic
-            title="Total Predictions"
-            value={dashboardStatsData.totalPredictions}
-            valueStyle={{ color: "#3f8600" }}
-          />
-        </Col>
-        <Col span={12}>
-          <Statistic
-            title="Total Users"
-            value={dashboardStatsData.total_users}
-            valueStyle={{ color: "#1890ff" }}
-          />
-        </Col>
-      </Row>
-    </Card>
+    <div style={{ display: "flex", width: "100%" }}>
+      <MyCard
+        styles={{
+          maxWidth: 220,
+        }}
+      >
+        <Title level={4} style={{ color: "#fff" }}>
+          Total Predictions
+        </Title>
+        <Paragraph style={{ color: "#fff" }}>
+          {dashboardStatsData.totalPredictions}
+        </Paragraph>
+        {/* <Statistic
+          title="Total Predictions"
+          value={dashboardStatsData.totalPredictions}
+          valueStyle={{ color: "#3f8600" }}
+        /> */}
+      </MyCard>
+      <MyCard
+        styles={{
+          maxWidth: 220,
+        }}
+      >
+        <Title level={4} style={{ color: "#fff" }}>
+          Total Users
+        </Title>
+        <Paragraph style={{ color: "#fff" }}>
+          {dashboardStatsData.total_users}
+        </Paragraph>
+        {/* <Statistic
+          title="Total Users"
+          value={dashboardStatsData.total_users}
+          valueStyle={{ color: "#3f8600" }}
+        /> */}
+      </MyCard>
+    </div>
   );
 };
 

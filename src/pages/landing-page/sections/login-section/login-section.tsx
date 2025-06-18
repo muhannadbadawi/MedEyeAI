@@ -6,7 +6,6 @@ import { login } from "../../../../api/authService";
 import { resetPassword, sendOtp } from "../../../../api/userService";
 import toast from "react-hot-toast";
 import { AxiosError } from "axios";
-import { UserRole } from "../../../../enums/userRole";
 
 const { Title } = Typography;
 
@@ -52,20 +51,8 @@ const LoginSection = () => {
     const { email, password } = values;
     try {
       setIsLoading(true);
-      const response = await login(email, password);
-
-      const user = (response as { user: any }).user;
+      await login(email, password, navigate);
       setIsLoading(false);
-
-      if (user) {
-        localStorage.setItem("user", JSON.stringify(user));
-        if(user.role === UserRole.Client)
-          navigate("client/home");
-        else
-          navigate("admin/home")
-      } else {
-        toast.error("Invalid email or password", { position: "bottom-center" });
-      }
     } catch (error) {
       const axiosError = error as AxiosError;
       if (axiosError.response?.status === 401) {
