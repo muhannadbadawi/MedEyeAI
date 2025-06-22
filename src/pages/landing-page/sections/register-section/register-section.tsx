@@ -42,6 +42,12 @@ const RegisterSection = () => {
           name="name"
           rules={[
             { required: true, message: t("RegisterSection.nameRequired") },
+            { min: 3, message: t("RegisterSection.nameMin") },
+            { max: 50, message: t("RegisterSection.nameMax") },
+            {
+              pattern: /^[A-Za-z\s]+$/,
+              message: t("RegisterSection.nameLettersOnly"),
+            },
           ]}
         >
           <Input placeholder={t("RegisterSection.enterName")} />
@@ -53,6 +59,16 @@ const RegisterSection = () => {
           rules={[
             { required: true, message: t("RegisterSection.emailRequired") },
             { type: "email", message: t("RegisterSection.validEmail") },
+            {
+              validator(_, value) {
+                if (value && value.endsWith("@example.com")) {
+                  return Promise.reject(
+                    new Error(t("RegisterSection.blockedEmailDomain"))
+                  );
+                }
+                return Promise.resolve();
+              },
+            },
           ]}
         >
           <Input placeholder={t("RegisterSection.enterEmail")} />
@@ -65,6 +81,15 @@ const RegisterSection = () => {
           name="password"
           rules={[
             { required: true, message: t("RegisterSection.passwordRequired") },
+            {
+              min: 8,
+              message: t("RegisterSection.passwordMinLength"),
+            },
+            {
+              pattern:
+                /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+              message: t("RegisterSection.passwordStrong"),
+            },
           ]}
         >
           <Input.Password placeholder={t("RegisterSection.enterPassword")} />

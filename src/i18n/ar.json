@@ -37,7 +37,13 @@
     "confirmPasswordPlaceholder": "أعد إدخال كلمة المرور",
     "passwordMatch": "كلمتا المرور غير متطابقتين",
     "registrationSuccess": "تم التسجيل بنجاح!",
-    "registrationFailed": "فشل التسجيل. حاول مرة أخرى."
+    "registrationFailed": "فشل التسجيل. حاول مرة أخرى.",
+    "nameMin": "يجب أن يكون الاسم 3 أحرف على الأقل",
+    "nameMax": "يجب ألا يتجاوز الاسم 50 حرفًا",
+    "nameLettersOnly": "يجب أن يحتوي الاسم على حروف ومسافات فقط",
+    "blockedEmailDomain": "نطاق البريد الإلكتروني غير مسموح",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "passwordStrong": "يجب أن تحتوي كلمة المرور على حرف واحد على الأقل، رقم، ورمز خاص"
   },
   "ContactSection": {
     "name": "الاسم",
@@ -103,6 +109,7 @@
     "noData": "لا توجد سجلات تاريخ",
     "scan": "الفحص",
     "prediction": "النتيجة",
+    "recommendation": "التوصية",
     "confidence": "نسبة الدقة",
     "date": "التاريخ",
     "zoomImage": "انقر للتكبير",

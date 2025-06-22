@@ -37,7 +37,13 @@
     "confirmPasswordPlaceholder": "Re-enter your password",
     "passwordMatch": "Passwords do not match",
     "registrationSuccess": "Registration successful!",
-    "registrationFailed": "Registration failed. Try again."
+    "registrationFailed": "Registration failed. Try again.",
+    "nameMin": "Name must be at least 3 characters",
+    "nameMax": "Name must be less than 50 characters",
+    "nameLettersOnly": "Name can only contain letters and spaces",
+    "blockedEmailDomain": "Email domain is not allowed",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordStrong": "Password must include a letter, a number, and a special character"
   },
   "ContactSection": {
     "name": "Name",
@@ -103,6 +109,7 @@
     "noData": "No history records found",
     "scan": "Scan",
     "prediction": "Prediction",
+    "recommendation": "Recommendation",
     "confidence": "Confidence",
     "date": "Date",
     "zoomImage": "Click to Zoom",

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Card,
   Typography,
   Form,
   Input,
@@ -8,7 +7,6 @@ import {
   Modal,
   Avatar,
   Upload,
-  message,
   Divider,
   Space,
   Select,
@@ -300,17 +298,33 @@ const Profile = () => {
             />
           </Form.Item>
           <Form.Item
-
-            label={<label className="blackLabel">{t("profilePage.newPassword")}</label>}
+            label={
+              <label className="blackLabel">
+                {t("profilePage.newPassword")}
+              </label>
+            }
             name="newPassword"
             rules={[
               { required: true, message: t("profilePage.newPasswordRequired") },
+              {
+                min: 8,
+                message: t("RegisterSection.passwordMinLength"),
+              },
+              {
+                pattern:
+                  /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message: t("RegisterSection.passwordStrong"),
+              },
             ]}
           >
             <Input.Password placeholder={t("profilePage.enterNewPassword")} />
           </Form.Item>
           <Form.Item
-            label={<label className="blackLabel">{t("profilePage.confirmNewPassword")}</label>}
+            label={
+              <label className="blackLabel">
+                {t("profilePage.confirmNewPassword")}
+              </label>
+            }
             name="confirmPassword"
             dependencies={["newPassword"]}
             rules={[

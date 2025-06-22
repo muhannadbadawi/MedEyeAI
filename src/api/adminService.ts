@@ -29,8 +29,8 @@ export const deleteClient = async (userId: string) => {
 
 export const editRecommendations = async (recommendations: {
   glaucoma: string;
-  diabeticRetinopathy: string;
-  cataracts: string;
+  diabetic_retinopathy: string;
+  cataract: string;
   normal: string;
 }) => {
   try {
